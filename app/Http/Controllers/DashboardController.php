@@ -7,6 +7,7 @@ use App\Models\BudgetAllocation;
 use App\Models\Expense;
 use App\Models\RecurringExpense;
 use App\Models\Salary;
+use Illuminate\Support\Facades\Schema;
 
 class DashboardController extends Controller
 {
@@ -17,7 +18,8 @@ class DashboardController extends Controller
         $currentMonthStart = now()->startOfMonth();
         $currentMonthEnd = now()->endOfMonth();
 
-        $totalAdditionalIncome = AdditionalIncome::whereBetween('received_at', [$currentMonthStart, $currentMonthEnd])->sum('amount');
+        $hasAdditional = Schema::hasTable('additional_incomes');
+        $totalAdditionalIncome = $hasAdditional ? AdditionalIncome::whereBetween('received_at', [$currentMonthStart, $currentMonthEnd])->sum('amount') : 0;
         $totalIncome = ($salary?->amount ?? 0) + $totalAdditionalIncome;
 
         $allocations = $salary ? $salary->budgetAllocations()->with('category')->get() : collect();
@@ -106,7 +108,9 @@ class DashboardController extends Controller
         Expense::query()->delete();
         BudgetAllocation::query()->delete();
         Salary::query()->delete();
-        AdditionalIncome::query()->delete();
+        if (Schema::hasTable('additional_incomes')) {
+            AdditionalIncome::query()->delete();
+        }
 
         return back()->with('success', 'Semua data berhasil direset. Kategori tetap tersimpan.');
     }
