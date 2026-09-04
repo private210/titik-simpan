@@ -32,6 +32,20 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/lang/{locale}', function (string $locale) {
+    if (! in_array($locale, ['id', 'en'])) {
+        abort(400);
+    }
+    session(['locale' => $locale]);
+    app()->setLocale($locale);
+
+    return back();
+})->name('lang.switch');
+
+Route::get('/demo', function () {
+    return view('demo');
+})->name('demo.index');
+
 Route::get('/seed-demo', function () {
     $token = env('DEMO_SEED_TOKEN');
 
@@ -55,6 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/budget', [BudgetController::class, 'index'])->name('budget.index');
     Route::post('/budget/salary', [BudgetController::class, 'storeSalary'])->name('budget.salary.store');
     Route::post('/budget/allocate', [BudgetController::class, 'allocate'])->name('budget.allocate');
+    Route::post('/budget/additional-income', [BudgetController::class, 'storeAdditionalIncome'])->name('budget.additional.store');
 
     Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
     Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
@@ -66,6 +81,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/recurring', [RecurringExpenseController::class, 'index'])->name('recurring.index');
     Route::get('/recurring/create', [RecurringExpenseController::class, 'create'])->name('recurring.create');
     Route::post('/recurring', [RecurringExpenseController::class, 'store'])->name('recurring.store');
+    Route::get('/recurring/{recurringExpense}/edit', [RecurringExpenseController::class, 'edit'])->name('recurring.edit');
     Route::patch('/recurring/{recurringExpense}', [RecurringExpenseController::class, 'update'])->name('recurring.update');
     Route::delete('/recurring/{recurringExpense}', [RecurringExpenseController::class, 'destroy'])->name('recurring.destroy');
     Route::post('/recurring/{recurringExpense}/pay', [RecurringExpenseController::class, 'markPaid'])->name('recurring.pay');

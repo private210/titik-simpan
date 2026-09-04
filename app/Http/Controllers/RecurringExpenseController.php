@@ -32,7 +32,7 @@ class RecurringExpenseController extends Controller
             'name' => 'required|string|max:255',
             'category_id' => ['required', Rule::exists('categories', 'id')->where('user_id', auth()->id())],
             'amount' => 'required|numeric|min:0.01',
-            'frequency' => 'required|in:weekly,monthly,yearly',
+            'frequency' => 'required|in:daily,weekly,monthly,yearly',
             'next_due_date' => 'required|date',
         ]);
 
@@ -45,12 +45,20 @@ class RecurringExpenseController extends Controller
     public function update(RecurringExpense $recurringExpense, Request $request)
     {
         $validated = $request->validate([
-            'is_active' => 'required|boolean',
+            'name' => 'sometimes|required|string|max:255',
+            'is_active' => 'sometimes|boolean',
         ]);
 
         $recurringExpense->update($validated);
 
-        return back()->with('success', 'Status berhasil diperbarui!');
+        return back()->with('success', 'Berhasil diperbarui!');
+    }
+
+    public function edit(RecurringExpense $recurringExpense)
+    {
+        $categories = Category::all();
+
+        return view('recurring.edit', compact('recurringExpense', 'categories'));
     }
 
     public function destroy(RecurringExpense $recurringExpense)

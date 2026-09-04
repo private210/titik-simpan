@@ -36,8 +36,10 @@ class ExpenseController extends Controller
         $categories = Category::all();
 
         $totalPeriod = Expense::whereBetween('spent_at', [$from, $to])->sum('amount');
+        $totalRecurring = Expense::whereBetween('spent_at', [$from, $to])->where('is_recurring', true)->sum('amount');
+        $totalNonRecurring = $totalPeriod - $totalRecurring;
 
-        return view('expenses.index', compact('expenses', 'categories', 'totalPeriod'));
+        return view('expenses.index', compact('expenses', 'categories', 'totalPeriod', 'totalRecurring', 'totalNonRecurring'));
     }
 
     public function create()

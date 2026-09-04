@@ -32,14 +32,18 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-3 gap-3 md:gap-4">
+    <div class="grid grid-cols-4 gap-3 md:gap-4">
         <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
             <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">Gaji</p>
             <p class="text-sm md:text-2xl font-bold text-gray-900 dark:text-white truncate mt-1" data-count="{{ $salary?->amount ?? 0 }}">Rp {{ number_format($salary?->amount ?? 0, 0, ',', '.') }}</p>
         </div>
         <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
-            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">Pengeluaran</p>
+            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">Total Pengeluaran</p>
             <p class="text-sm md:text-2xl font-bold text-red-600 dark:text-red-400 truncate mt-1" data-count="{{ $totalExpenses }}">Rp {{ number_format($totalExpenses, 0, ',', '.') }}</p>
+        </div>
+        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
+            <p class="text-[10px] md:text-sm text-blue-600 dark:text-blue-400">Tetap/Berulang</p>
+            <p class="text-sm md:text-2xl font-bold text-blue-600 dark:text-blue-400 truncate mt-1" data-count="{{ $totalRecurring }}">Rp {{ number_format($totalRecurring, 0, ',', '.') }}</p>
         </div>
         <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
             @php $remaining = ($salary?->amount ?? 0) - $totalExpenses; @endphp
@@ -47,6 +51,78 @@
             <p class="text-sm md:text-2xl font-bold {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $remaining }}">
                 Rp {{ number_format($remaining, 0, ',', '.') }}
             </p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+            <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+                <svg class="w-5 h-5 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                Pengeluaran Tetap / Berulang
+            </h2>
+            @php $recurringExpensesList = $expenses->where('is_recurring', true); @endphp
+            @if($recurringExpensesList->count() > 0)
+                <div class="overflow-x-auto max-h-60 scrollbar-hide">
+                    <table class="w-full mobile-card-table">
+                        <thead>
+                            <tr class="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                                <th class="pb-2 font-medium">Deskripsi</th>
+                                <th class="pb-2 font-medium text-right">Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($recurringExpensesList as $e)
+                                <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0">
+                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="Deskripsi">
+                                        <div class="flex items-center gap-2">
+                                            <span>{{ $e->category->icon ?? '' }}</span>
+                                            <span>{{ $e->description }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-2 text-xs md:text-sm text-right font-medium text-gray-900 dark:text-white" data-label="Jumlah">Rp {{ number_format($e->amount, 0, ',', '.') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p class="text-gray-400 dark:text-gray-500 text-sm text-center py-6">Tidak ada pengeluaran tetap</p>
+            @endif
+        </div>
+
+        <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+            <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+                <svg class="w-5 h-5 text-orange-500 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
+                Pengeluaran Lainnya
+            </h2>
+            @php $otherExpensesList = $expenses->where('is_recurring', false); @endphp
+            @if($otherExpensesList->count() > 0)
+                <div class="overflow-x-auto max-h-60 scrollbar-hide">
+                    <table class="w-full mobile-card-table">
+                        <thead>
+                            <tr class="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                                <th class="pb-2 font-medium">Deskripsi</th>
+                                <th class="pb-2 font-medium text-right">Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($otherExpensesList as $e)
+                                <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0">
+                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="Deskripsi">
+                                        <div class="flex items-center gap-2">
+                                            <span>{{ $e->category->icon ?? '' }}</span>
+                                            <span>{{ $e->description }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-2 text-xs md:text-sm text-right font-medium text-gray-900 dark:text-white" data-label="Jumlah">Rp {{ number_format($e->amount, 0, ',', '.') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p class="text-gray-400 dark:text-gray-500 text-sm text-center py-6">Tidak ada pengeluaran lainnya</p>
+            @endif
         </div>
     </div>
 

@@ -26,7 +26,11 @@ class Salary extends Model
 
     public function scopeCurrentMonth(Builder $query): Builder
     {
-        return $query->whereBetween('received_at', [now()->startOfMonth(), now()->endOfMonth()]);
+        $today = now()->toDateString();
+        $thirtyDaysAgo = now()->subDays(30)->toDateString();
+
+        return $query->where('received_at', '<=', $today)
+            ->where('received_at', '>=', $thirtyDaysAgo);
     }
 
     public function budgetAllocations(): HasMany

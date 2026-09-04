@@ -64,6 +64,8 @@ class ReportController extends Controller
             ->get();
 
         $total = $expenses->sum('amount');
+        $totalRecurring = $expenses->where('is_recurring', true)->sum('amount');
+        $totalNonRecurring = $total - $totalRecurring;
 
         $categoryBreakdown = Expense::select('category_id', DB::raw('SUM(amount) as total'))
             ->whereBetween('spent_at', [$startDate, $endDate])
@@ -98,6 +100,8 @@ class ReportController extends Controller
             'expenses' => $expenses,
             'total' => $total,
             'totalExpenses' => $total,
+            'totalRecurring' => $totalRecurring,
+            'totalNonRecurring' => $totalNonRecurring,
             'salary' => Salary::where('received_at', '>=', $startDate)
                 ->where('received_at', '<=', $endDate)
                 ->first(),

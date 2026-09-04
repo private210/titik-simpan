@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1BA37A" id="browser-theme-color">
-    <link rel="icon" href="/assets/icon-light.svg" type="image/svg+xml">
+    <link rel="icon" href="/assets/icon-dark.svg" type="image/svg+xml">
     <link rel="alternate icon" href="/favicon.ico">
     <title>@yield('title', 'Titik Simpan')</title>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
@@ -85,6 +85,29 @@
     @stack('styles')
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 min-h-screen pb-20 md:pb-0">
+    <div id="mobile-loading" class="hidden md:hidden fixed inset-0 z-[200] bg-white dark:bg-gray-900 flex flex-col items-center justify-center gap-4">
+        <img src="/assets/logo-light.webp" alt="Titik Simpan" class="h-16 w-auto object-contain animate-pulse">
+        <p class="text-sm text-gray-400 dark:text-gray-500 font-slogan">Memuat data...</p>
+        <div class="w-48 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div class="h-full bg-[#1BA37A] rounded-full animate-[loading-shimmer_1.5s_ease-in-out_infinite]" style="width:60%"></div>
+        </div>
+    </div>
+    <script>
+        (function(){
+            var isMobile = window.innerWidth <= 768;
+            if(isMobile && !sessionStorage.getItem('ml')) {
+                var el = document.getElementById('mobile-loading');
+                if(el) { el.classList.remove('hidden'); }
+                sessionStorage.setItem('ml','1');
+                window.addEventListener('load', function(){
+                    setTimeout(function(){
+                        if(el) { el.style.opacity='0'; el.style.transition='opacity 0.4s ease'; }
+                        setTimeout(function(){ if(el) el.remove(); }, 400);
+                    }, 600);
+                });
+            }
+        })();
+    </script>
     <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16 md:h-28">
@@ -106,6 +129,21 @@
                 <div class="flex-1 flex justify-center md:hidden"></div>
 
                 <div class="flex items-center space-x-2 md:space-x-3 shrink-0">
+                    <div class="relative" id="lang-wrap">
+                        <button onclick="toggleLangMenu(event)" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all btn-press border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-xs font-bold" title="Language">
+                            {{ strtoupper(app()->getLocale()) }}
+                        </button>
+                        <div id="lang-menu" class="hidden absolute right-0 mt-2 w-36 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
+                            <a href="{{ route('lang.switch', 'id') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors {{ app()->getLocale() === 'id' ? 'font-bold text-[#1BA37A] dark:text-[#6EE7B0]' : '' }}">
+                                🇮🇩 Indonesia
+                                @if(app()->getLocale() === 'id')<svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>@endif
+                            </a>
+                            <a href="{{ route('lang.switch', 'en') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-t border-gray-100 dark:border-gray-700 {{ app()->getLocale() === 'en' ? 'font-bold text-[#1BA37A] dark:text-[#6EE7B0]' : '' }}">
+                                🇬🇧 English
+                                @if(app()->getLocale() === 'en')<svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>@endif
+                            </a>
+                        </div>
+                    </div>
                     <div class="relative" id="theme-wrap">
                         <button onclick="toggleThemeMenu(event)" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-all btn-press shadow-md shadow-black/10 dark:shadow-black/40 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:shadow-lg" title="Pilih tema" aria-label="Pilih tema">
                             <svg id="theme-icon-dark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
@@ -186,7 +224,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div class="flex items-center gap-2.5">
-                    <img src="/assets/icon-monokrom.svg" alt="Titik Simpan" class="w-7 h-7 object-contain select-none">
+                    <img id="footer-logo" src="/assets/icon-light.svg" alt="Titik Simpan" class="w-7 h-7 object-contain select-none">
                     <span class="font-brand font-bold text-gray-900 dark:text-white">Titik Simpan</span>
                 </div>
                 <p class="text-xs text-gray-400 dark:text-gray-500">Kelola pemasukan & pengeluaran lebih bijak, pencatatan sederhana untuk hidup lebih teratur.</p>
@@ -343,6 +381,8 @@
             updateThemeChecks(theme);
             var logo = document.getElementById('navbar-logo');
             if (logo) logo.src = resolved === 'dark' ? '/assets/logo-dark.webp' : '/assets/logo-light.webp';
+            var footerLogo = document.getElementById('footer-logo');
+            if (footerLogo) footerLogo.src = resolved === 'dark' ? '/assets/icon-dark.svg' : '/assets/icon-light.svg';
         }
         function setTheme(theme) { localStorage.setItem('theme', theme); applyTheme(theme); }
         function updateThemeIcon(resolved) {
@@ -376,7 +416,18 @@
                 var menu = document.getElementById('theme-menu');
                 if (menu) menu.classList.add('hidden');
             }
+            var langWrap = document.getElementById('lang-wrap');
+            if (langWrap && !langWrap.contains(e.target)) {
+                var langMenu = document.getElementById('lang-menu');
+                if (langMenu) langMenu.classList.add('hidden');
+            }
         });
+
+        function toggleLangMenu(e) {
+            e.stopPropagation();
+            var menu = document.getElementById('lang-menu');
+            if (menu) menu.classList.toggle('hidden');
+        }
 
         // (clock moved to dashboard greeting banner)
 

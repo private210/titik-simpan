@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdditionalIncome;
 use App\Models\Category;
 use App\Models\Salary;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 
 class BudgetController extends Controller
 {
@@ -14,10 +13,25 @@ class BudgetController extends Controller
     {
         $salary = Salary::currentMonth()->first();
 
+        $currentMonthStart = now()->startOfMonth();
+        $currentMonthEnd = now()->endOfMonth();
+
+        $additionalIncomes = AdditionalIncome::whereBetween('received_at', [$currentMonthStart, $currentMonthEnd])
+            ->latest('received_at')
+            ->get();
+
         $categories = Category::all();
         $allocations = $salary ? $salary->budgetAllocations()->with('category')->get() : collect();
 
-        return view('budget.index', compact('salary', 'categories', 'allocations'));
+        $totalAdditional = $additionalIncomes->sum('amount');
+
+        return view('budget.index', compact(
+            'salary',
+            'additionalIncomes',
+            'totalAdditional',
+            'categories',
+            'allocations'
+        ));
     }
 
     public function storeSalary(Request $request)
@@ -41,31 +55,17 @@ class BudgetController extends Controller
             ->with('success', 'Gaji berhasil disimpan!');
     }
 
-    public function allocate(Request $request)
+    public function storeAdditionalIncome(Request $request)
     {
         $validated = $request->validate([
-            'salary_id' => 'required|exists:salaries,id',
-            'allocations' => 'required|array',
-            'allocations.*.category_id' => ['required', Rule::exists('categories', 'id')->where('user_id', auth()->id())],
-            'allocations.*.amount' => 'required|numeric|min:0',
+            'amount' => 'required|numeric|min:0',
+            'description' => 'required|string|max:255',
+            'received_at' => 'required|date',
         ]);
 
-        $salary = Salary::findOrFail($validated['salary_id']);
-
-        DB::transaction(function () use ($salary, $validated) {
-            $salary->budgetAllocations()->delete();
-
-            foreach ($validated['allocations'] as $allocation) {
-                if ($allocation['amount'] > 0) {
-                    $salary->budgetAllocations()->create([
-                        'category_id' => $allocation['category_id'],
-                        'amount' => $allocation['amount'],
-                    ]);
-                }
-            }
-        });
+        AdditionalIncome::create($validated);
 
         return redirect()->route('budget.index')
-            ->with('success', 'Alokasi budget berhasil disimpan!');
+            ->with('success', 'Pendapatan tambahan berhasil disimpan!');
     }
 }

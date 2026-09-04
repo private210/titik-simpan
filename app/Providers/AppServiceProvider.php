@@ -22,5 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('login', fn ($job) => Limit::perMinute(10)->by($job->ip()));
+
+        app()->setLocale(session('locale', 'id'));
     }
 }

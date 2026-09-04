@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdditionalIncome;
 use App\Models\BudgetAllocation;
 use App\Models\Expense;
 use App\Models\RecurringExpense;
@@ -12,20 +13,25 @@ class DashboardController extends Controller
     public function index()
     {
         $salary = Salary::currentMonth()->first();
-        $currentMonth = now()->startOfMonth();
+
+        $currentMonthStart = now()->startOfMonth();
+        $currentMonthEnd = now()->endOfMonth();
+
+        $totalAdditionalIncome = AdditionalIncome::whereBetween('received_at', [$currentMonthStart, $currentMonthEnd])->sum('amount');
+        $totalIncome = ($salary?->amount ?? 0) + $totalAdditionalIncome;
 
         $allocations = $salary ? $salary->budgetAllocations()->with('category')->get() : collect();
         $totalAllocated = $salary ? $salary->totalAllocated() : 0;
         $totalSpent = $salary ? $salary->totalSpent() : 0;
         $remaining = $salary ? $salary->remaining() : 0;
 
+        $totalMonthlyExpenses = Expense::where('spent_at', '>=', $currentMonthStart)->sum('amount');
+
         $recentExpenses = Expense::with('category')
-            ->where('spent_at', '>=', $currentMonth)
+            ->where('spent_at', '>=', $currentMonthStart)
             ->latest('spent_at')
             ->limit(10)
             ->get();
-
-        $monthlyTotal = Expense::where('spent_at', '>=', $currentMonth)->sum('amount');
 
         $dueRecurring = RecurringExpense::with('category')
             ->where('is_active', true)
@@ -35,31 +41,62 @@ class DashboardController extends Controller
         $greetingName = strtok(auth()->user()->name, ' ');
         $hour = (int) now()->format('G');
         $timeGreeting = $hour < 11 ? 'Selamat pagi' : ($hour < 15 ? 'Selamat siang' : ($hour < 19 ? 'Selamat sore' : 'Selamat malam'));
-        $quotes = [
+
+        $safeQuotes = [
             'Setiap rupiah yang kamu hemat hari ini adalah investasi untuk masa depanmu.',
             'Kebebasan finansial dimulai dari keputusan kecil yang konsisten.',
-            'Daripada menunggu cukup, mulai kelola dari yang ada sekarang.',
             'Anggaran yang jelas adalah peta menuju tujuan keuanganmu.',
             'Disiplin hari ini adalah kemapanan esok hari.',
-            'Setiap pengeluaran tercatat adalah langkah menuju pengelolaan keuangan yang sehat.',
-            'Kekayaan sejati datang dari kebiasaan, bukan dari jumlah.',
-            'Rencanakan dengan bijak agar bulan depannya terasa lebih ringan.',
             'Mengatur keuangan adalah bentuk cinta untuk masa depanmu.',
+            'Rencanakan dengan bijak agar bulan depannya terasa lebih ringan.',
         ];
-        $motivation = $quotes[array_rand($quotes)];
+
+        $cautionQuotes = [
+            'Hati-hati, pengeluaran sudah cukup besar. Evaluasi kebutuhan vs keinginan.',
+            'Pengeluaran mulai mendekati batas. Saatnya bijak berbelanja.',
+            'Pengeluaran bulan ini sudah melewati 25% gaji. Perhatikan sisa anggaranmu.',
+        ];
+
+        $dangerQuotes = [
+            'Pengeluaran sudah lebih dari 50% gaji! Saatnya berhenti dan evaluasi.',
+            'Waspadalah! Pengeluaranmu sudah berlebihan. Prioritaskan kebutuhan pokok.',
+            'Pengeluaran melebihi batas aman. Kurangi belanja yang tidak perlu sekarang juga.',
+            'Sisa gaji semakin tipis. Hentikan pengeluaran yang tidak mendesak.',
+        ];
+
+        $totalIncomeForRatio = $totalIncome > 0 ? $totalIncome : ($salary?->amount ?? 0);
+        $expenseRatio = $totalIncomeForRatio > 0 ? ($totalMonthlyExpenses / $totalIncomeForRatio) * 100 : 0;
+
+        if ($expenseRatio > 50) {
+            $motivation = $dangerQuotes[array_rand($dangerQuotes)];
+            $motivationColor = 'text-red-200';
+            $motivationBg = 'bg-red-500/20';
+        } elseif ($expenseRatio > 25) {
+            $motivation = $cautionQuotes[array_rand($cautionQuotes)];
+            $motivationColor = 'text-yellow-200';
+            $motivationBg = 'bg-yellow-500/20';
+        } else {
+            $motivation = $safeQuotes[array_rand($safeQuotes)];
+            $motivationColor = 'text-white/85';
+            $motivationBg = '';
+        }
 
         return view('dashboard', compact(
             'salary',
+            'totalAdditionalIncome',
+            'totalIncome',
             'allocations',
             'totalAllocated',
             'totalSpent',
             'remaining',
+            'totalMonthlyExpenses',
             'recentExpenses',
-            'monthlyTotal',
             'dueRecurring',
             'greetingName',
             'timeGreeting',
-            'motivation'
+            'motivation',
+            'motivationColor',
+            'motivationBg',
         ));
     }
 
@@ -69,6 +106,7 @@ class DashboardController extends Controller
         Expense::query()->delete();
         BudgetAllocation::query()->delete();
         Salary::query()->delete();
+        AdditionalIncome::query()->delete();
 
         return back()->with('success', 'Semua data berhasil direset. Kategori tetap tersimpan.');
     }

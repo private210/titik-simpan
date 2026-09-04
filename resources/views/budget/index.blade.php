@@ -49,6 +49,67 @@
         </form>
     </div>
 
+    <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+        <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+            <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Pendapatan Tambahan
+        </h2>
+        <form action="{{ route('budget.additional.store', [], false) }}" method="POST" class="space-y-4">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+                <div class="min-w-0">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Jumlah</label>
+                    <div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-[#1BA37A] focus-within:border-[#1BA37A] transition-all bg-white dark:bg-gray-700">
+                        <span class="pl-4 pr-3 py-2.5 md:py-3 text-black dark:text-white text-sm md:text-md font-medium border-r border-gray-300 dark:border-gray-600 shrink-0">Rp</span>
+                        <input type="text" name="amount_display" inputmode="numeric"
+                            class="w-full min-w-0 border-0 px-3 py-2.5 md:py-3 bg-transparent text-gray-900 dark:text-white text-sm md:text-base focus:outline-none focus:ring-0"
+                            placeholder="0" oninput="formatRupiah(this)" onfocus="this.select()">
+                        <input type="hidden" name="amount" value="{{ old('amount') }}">
+                    </div>
+                    @error('amount')
+                        <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="min-w-0">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Deskripsi</label>
+                    <input type="text" name="description" value="{{ old('description') }}" required
+                        class="w-full min-w-0 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-3 py-2 transition-all"
+                        placeholder="Bonus, Freelance, dll">
+                    @error('description')
+                        <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="min-w-0">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tanggal Diterima</label>
+                    <input type="date" name="received_at" value="{{ now()->format('Y-m-d') }}" required
+                        class="w-full min-w-0 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-3 py-2 transition-all">
+                    @error('received_at')
+                        <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+            <button type="submit" class="w-full md:w-auto bg-[#1BA37A] text-white px-6 py-2.5 rounded-2xl hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press font-medium text-sm md:text-base shadow-sm">
+                Simpan Pendapatan Tambahan
+            </button>
+        </form>
+        @if($additionalIncomes->count() > 0)
+            <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Total Pendapatan Tambahan: <span class="font-semibold text-[#1BA37A] dark:text-[#6EE7B0]">Rp {{ number_format($totalAdditional, 0, ',', '.') }}</span></p>
+                <div class="space-y-2">
+                    @foreach($additionalIncomes as $income)
+                        <div class="flex items-center justify-between p-2.5 bg-gray-50 dark:bg-gray-700/30 rounded-xl">
+                            <div>
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $income->description }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">{{ $income->received_at->format('d M Y') }}</p>
+                            </div>
+                            <span class="text-sm font-semibold text-[#1BA37A] dark:text-[#6EE7B0]">Rp {{ number_format($income->amount, 0, ',', '.') }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+    </div>
+
     @if($salary)
         <div class="flex justify-end">
             <button type="button" id="toggle-alloc" onclick="toggleAllocForm()" class="bg-[#1BA37A] text-white px-4 md:px-5 py-2.5 rounded-2xl hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press font-medium text-sm md:text-base shadow-sm">

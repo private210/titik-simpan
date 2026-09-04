@@ -39,8 +39,20 @@
         </form>
 
         <div id="summary-box" class="bg-[#1BA37A]/10 dark:bg-[#1BA37A]/25 rounded-2xl p-4 mb-5">
-            <p class="text-xs text-[#1BA37A] dark:text-[#6EE7B0]">Total Pengeluaran</p>
-            <p class="text-xl md:text-2xl font-bold text-[#1BA37A] dark:text-[#6EE7B0]" data-count="{{ $totalPeriod }}">Rp {{ number_format($totalPeriod, 0, ',', '.') }}</p>
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <p class="text-xs text-[#1BA37A] dark:text-[#6EE7B0]">Total Pengeluaran</p>
+                    <p class="text-lg md:text-xl font-bold text-[#1BA37A] dark:text-[#6EE7B0]" data-count="{{ $totalPeriod }}">Rp {{ number_format($totalPeriod, 0, ',', '.') }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-blue-600 dark:text-blue-400">Pengeluaran Tetap</p>
+                    <p class="text-lg md:text-xl font-bold text-blue-600 dark:text-blue-400" data-count="{{ $totalRecurring }}">Rp {{ number_format($totalRecurring, 0, ',', '.') }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-orange-600 dark:text-orange-400">Pengeluaran Lainnya</p>
+                    <p class="text-lg md:text-xl font-bold text-orange-600 dark:text-orange-400" data-count="{{ $totalNonRecurring }}">Rp {{ number_format($totalNonRecurring, 0, ',', '.') }}</p>
+                </div>
+            </div>
         </div>
 
         @if($expenses->count() > 0)

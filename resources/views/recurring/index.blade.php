@@ -50,7 +50,7 @@
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-500 dark:text-gray-400">Frekuensi:</span>
-                                <span class="text-gray-700 dark:text-gray-300">{{ ['weekly' => 'Mingguan', 'monthly' => 'Bulanan', 'yearly' => 'Tahunan'][$recurring->frequency] ?? ucfirst($recurring->frequency) }}</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ ['daily' => 'Harian', 'weekly' => 'Mingguan', 'monthly' => 'Bulanan', 'yearly' => 'Tahunan'][$recurring->frequency] ?? ucfirst($recurring->frequency) }}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-500 dark:text-gray-400">Jatuh Tempo:</span>
@@ -72,6 +72,9 @@
                                     </button>
                                 </form>
                             @endif
+                            <a href="{{ route('recurring.edit', $recurring) }}" class="flex-1 text-center bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 py-2 rounded-2xl text-sm hover:bg-yellow-200 dark:hover:bg-yellow-900/50 active:bg-yellow-300 dark:active:bg-yellow-700/50 transition-all btn-press">
+                                Edit
+                            </a>
                             <button type="button" onclick="confirmDeleteRecurring('{{ route('recurring.destroy', $recurring, false) }}', '{{ addslashes($recurring->name) }}')" class="flex-1 bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 py-2 rounded-2xl text-sm hover:bg-red-200 dark:hover:bg-red-800/50 active:bg-red-300 dark:active:bg-red-700/50 transition-all btn-press">
                                 Hapus
                             </button>

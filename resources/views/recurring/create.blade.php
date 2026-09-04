@@ -57,7 +57,8 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Frekuensi</label>
-                <select name="frequency" required class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-4 py-2.5 transition-all">
+                    <select name="frequency" required class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-4 py-2.5 transition-all">
+                    <option value="daily" {{ old('frequency') === 'daily' ? 'selected' : '' }}>Harian</option>
                     <option value="monthly" {{ old('frequency') === 'monthly' ? 'selected' : '' }}>Bulanan</option>
                     <option value="weekly" {{ old('frequency') === 'weekly' ? 'selected' : '' }}>Mingguan</option>
                     <option value="yearly" {{ old('frequency') === 'yearly' ? 'selected' : '' }}>Tahunan</option>
