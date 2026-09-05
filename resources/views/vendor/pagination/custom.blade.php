@@ -48,7 +48,7 @@
         </ul>
 
         <p class="text-xs text-gray-500 dark:text-gray-400">
-            Menampilkan {{ $paginator->firstItem() }}–{{ $paginator->lastItem() }} dari {{ $paginator->total() }} data
+            {{ __('messages.pagination.showing', ['first' => $paginator->firstItem(), 'last' => $paginator->lastItem(), 'total' => $paginator->total()]) }}
         </p>
     </nav>
 @endif

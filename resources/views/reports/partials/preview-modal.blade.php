@@ -18,8 +18,8 @@
                     </svg>
                 </div>
                 <div class="min-w-0">
-                    <p id="report-preview-filename" class="text-sm md:text-base font-semibold text-gray-900 dark:text-white truncate">laporan-pengeluaran.pdf</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Pratinjau Laporan Pengeluaran</p>
+                    <p id="report-preview-filename" class="text-sm md:text-base font-semibold text-gray-900 dark:text-white truncate">{{ __('messages.reports.preview_default_filename') }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('messages.reports.preview_subtitle') }}</p>
                 </div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
@@ -28,11 +28,11 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                     </svg>
-                    <span class="hidden sm:inline">Download</span>
+                    <span class="hidden sm:inline">{{ __('messages.reports.preview_download') }}</span>
                 </a>
                 <button type="button" onclick="closeReportPreview()"
                         class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                        aria-label="Tutup pratinjau">
+                        aria-label="{{ __('messages.reports.preview_close') }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
@@ -47,10 +47,10 @@
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                 </svg>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Memuat pratinjau…</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('messages.reports.preview_loading') }}</p>
             </div>
             <iframe id="report-preview-iframe"
-                    title="Pratinjau Laporan PDF"
+                    title="{{ __('messages.reports.preview_iframe_title') }}"
                     class="w-full h-full border-0 bg-white"
                     onload="document.getElementById('report-preview-loading').classList.add('hidden')"></iframe>
         </div>

@@ -17,6 +17,11 @@ return [
     'no' => 'No',
     'optional' => 'Optional',
     'no_data' => 'No data yet.',
+    'days' => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    'months' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+
+    'confirm_save' => 'Yes, Save',
+    'confirm_back' => 'Yes, Go Back',
 
     'nav' => [
         'dashboard' => 'Dashboard',
@@ -27,6 +32,19 @@ return [
         'reports' => 'Reports',
         'profile' => 'Profile',
         'logout' => 'Logout',
+    ],
+    'theme' => [
+        'title' => 'Choose theme',
+        'light' => 'Light',
+        'dark' => 'Dark',
+        'system' => 'System',
+    ],
+
+    // Pagination
+    'pagination' => [
+        'prev' => 'Previous',
+        'next' => 'Next',
+        'showing' => 'Showing :first–:last of :total entries',
     ],
 
     'auth' => [
@@ -46,6 +64,11 @@ return [
         'welcome_back' => 'Welcome back!',
         'create_account' => 'Create a new account',
         'start_managing' => 'Start managing your finances today.',
+        'login_failed' => 'Email or password is incorrect.',
+        'registered' => 'Account created successfully, welcome!',
+        'google_not_configured' => 'Google login is not configured.',
+        'google_failed' => 'Failed to login with Google, please try again.',
+        'google_logged_in' => 'Logged in with Google successfully!',
     ],
 
     'dashboard' => [
@@ -95,6 +118,7 @@ return [
         'remaining_unallocated' => 'Remaining Unallocated',
         'save_allocation' => 'Save Allocation',
         'allocation_saved' => 'Budget allocation saved successfully!',
+        'additional_unavailable' => 'This feature is not available yet. Run the migration first.',
     ],
 
     'expenses' => [
@@ -106,6 +130,7 @@ return [
         'amount' => 'Amount',
         'date' => 'Date',
         'category' => 'Category',
+        'select_category' => 'Select Category',
         'allocation' => 'Budget Allocation (Optional)',
         'recurring' => 'Recurring',
         'save' => 'Save Expense',
@@ -120,6 +145,14 @@ return [
         'recurring_expenses' => 'Fixed/Recurring',
         'other_expenses' => 'Other Expenses',
         'no_expenses_period' => 'No expenses for this period.',
+        'description_placeholder' => 'e.g.: Lunch, Gas, etc.',
+        'cancel_title' => 'Cancel Entry?',
+        'cancel_message' => 'Unsaved data will be lost. Are you sure you want to go back?',
+        'edit_cancel_title' => 'Cancel Edit?',
+        'edit_cancel_message' => 'Unsaved changes will be lost. Are you sure you want to go back?',
+        'no_allocation' => 'No allocation',
+        'remaining' => 'Remaining',
+        'select_allocation_hint' => 'Select an allocation to track expenses from a specific budget',
     ],
 
     'recurring' => [
@@ -144,9 +177,11 @@ return [
         'saved' => 'Recurring expense added successfully!',
         'updated' => 'Updated successfully!',
         'deleted' => 'Recurring expense deleted successfully!',
-        'paid' => 'Pay & Update',
+        'paid' => 'Pay',
         'paid_success' => 'Payment recorded!',
         'no_recurring' => 'No recurring expenses yet.',
+        'cancel_form_title' => 'Cancel Entry?',
+        'cancel_form_message' => 'Unsaved data will be lost. Are you sure you want to go back?',
     ],
 
     'reports' => [
@@ -166,6 +201,12 @@ return [
         'export_pdf' => 'PDF',
         'export_excel' => 'Excel',
         'no_data' => 'No data for this month yet.',
+        'preview_default_filename' => 'expense-report.pdf',
+        'preview_subtitle' => 'Expense Report Preview',
+        'preview_download' => 'Download',
+        'preview_close' => 'Close preview',
+        'preview_loading' => 'Loading preview…',
+        'preview_iframe_title' => 'PDF Report Preview',
     ],
 
     'categories' => [
@@ -178,6 +219,14 @@ return [
         'saved' => 'Category added successfully!',
         'updated' => 'Category updated successfully!',
         'deleted' => 'Category deleted successfully!',
+        'view_expenses' => 'View Expenses',
+        'delete_confirm_title' => 'Delete Category?',
+        'delete_confirm_message' => 'Are you sure you want to delete the category ":name"? Categories that still have expenses cannot be deleted.',
+        'delete_confirm_text' => 'Yes, Delete',
+        'name_placeholder' => 'e.g.: Transportation',
+        'list_title' => 'Category List',
+        'expenses_count_suffix' => 'expenses',
+        'no_categories' => 'No categories yet. Add your first category above.',
     ],
 
     'profile' => [
@@ -189,7 +238,19 @@ return [
         'current_password' => 'Current Password',
         'new_password' => 'New Password',
         'update_profile' => 'Save Changes',
+        'google_synced' => 'Profile synced from Google successfully!',
         'profile_updated' => 'Profile updated successfully!',
+        'confirm_new_password' => 'Confirm New Password',
+        'google_sync' => 'Sync with Google',
+        'my_title' => 'My Profile',
+        'connected_google' => 'Connected with Google',
+        'avatar_help' => 'JPG, PNG, or WEBP max 1 MB. Stored as data in the database.',
+        'google_password_note' => 'Google account: set a new password directly without the old one.',
+        'password_help' => 'Minimum 10 characters, must include uppercase, lowercase, number, and symbol. Leave empty to keep unchanged.',
+        'save_profile' => 'Save Profile',
+        'google_sync_title' => 'Sync from Google',
+        'google_sync_desc' => 'Automatically fetch your name, email, and profile photo from your Google account.',
+        'avatar_size_alert' => 'Max photo size is 1 MB.',
     ],
 
     'demo' => [
@@ -198,5 +259,27 @@ return [
         'login_prompt' => 'To save your own data, please register or login.',
         'register' => 'Register Now',
         'login' => 'Login',
+    ],
+
+    'motivation' => [
+        'safe' => [
+            'Every rupiah you save today is an investment in your future.',
+            'Financial freedom starts with small, consistent decisions.',
+            'A clear budget is the map to your financial goals.',
+            'Discipline today is stability tomorrow.',
+            'Managing your money is a form of love for your future self.',
+            'Plan wisely so next month feels lighter.',
+        ],
+        'caution' => [
+            'Careful, expenses are getting high. Reconsider needs vs wants.',
+            'Spending is approaching its limit. Time to shop wisely.',
+            'This month\u2019s spending has passed 25% of your salary. Watch your remaining budget.',
+        ],
+        'danger' => [
+            'Spending is already past 50% of your salary! Time to stop and reassess.',
+            'Warning! Your spending is excessive. Prioritize the essentials.',
+            'Spending has exceeded the safe limit. Cut unnecessary purchases now.',
+            'Your remaining salary is getting thin. Pause non-essential spending.',
+        ],
     ],
 ];

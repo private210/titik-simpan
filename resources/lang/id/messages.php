@@ -23,8 +23,27 @@ return [
     'reset' => 'Reset',
     'no_data' => 'Belum ada data.',
     'no_data_found' => 'Tidak ada data ditemukan.',
+    'days' => ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+    'months' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+
+    'confirm_save' => 'Ya, Simpan',
+    'confirm_back' => 'Ya, Kembali',
 
     // Navigation
+    'theme' => [
+        'title' => 'Pilih tema',
+        'light' => 'Terang',
+        'dark' => 'Gelap',
+        'system' => 'Sistem',
+    ],
+
+    // Pagination
+    'pagination' => [
+        'prev' => 'Sebelumnya',
+        'next' => 'Berikutnya',
+        'showing' => 'Menampilkan :first–:last dari :total data',
+    ],
+
     'nav' => [
         'dashboard' => 'Dashboard',
         'budget' => 'Budget',
@@ -56,6 +75,11 @@ return [
         'welcome_back' => 'Selamat datang kembali!',
         'create_account' => 'Buat akun baru',
         'start_managing' => 'Mulai kelola keuangan Anda hari ini.',
+        'login_failed' => 'Email atau kata sandi salah.',
+        'registered' => 'Akun berhasil dibuat, selamat datang!',
+        'google_not_configured' => 'Login Google belum dikonfigurasi.',
+        'google_failed' => 'Gagal masuk dengan Google, coba lagi.',
+        'google_logged_in' => 'Berhasil masuk dengan Google!',
     ],
 
     // Dashboard
@@ -117,6 +141,7 @@ return [
         'confirm_save_allocation' => 'Simpan Alokasi?',
         'confirm_save_allocation_message' => 'Alokasi budget akan diperbarui sesuai jumlah yang dimasukkan.',
         'no_salary_yet' => 'Silakan input gaji terlebih dahulu untuk mulai mengalokasikan dana.',
+        'additional_unavailable' => 'Fitur ini belum tersedia. Jalankan migrasi terlebih dahulu.',
     ],
 
     // Expenses
@@ -129,6 +154,7 @@ return [
         'amount' => 'Jumlah',
         'date' => 'Tanggal',
         'category' => 'Kategori',
+        'select_category' => 'Pilih Kategori',
         'allocation' => 'Alokasi Budget (Opsional)',
         'recurring' => 'Berulang',
         'save' => 'Simpan Pengeluaran',
@@ -146,6 +172,14 @@ return [
         'recurring_expenses' => 'Pengeluaran Tetap',
         'other_expenses' => 'Pengeluaran Lainnya',
         'no_expenses_period' => 'Belum ada pengeluaran untuk periode ini.',
+        'description_placeholder' => 'Contoh: Makan siang, Beli bensin, dll',
+        'cancel_title' => 'Batalkan Pengisian?',
+        'cancel_message' => 'Data yang belum disimpan akan hilang. Yakin ingin kembali?',
+        'edit_cancel_title' => 'Batalkan Edit?',
+        'edit_cancel_message' => 'Perubahan yang belum disimpan akan hilang. Yakin ingin kembali?',
+        'no_allocation' => 'Tidak ada alokasi',
+        'remaining' => 'Sisa',
+        'select_allocation_hint' => 'Pilih alokasi untuk melacak pengeluaran dari budget tertentu',
     ],
 
     // Recurring
@@ -171,7 +205,7 @@ return [
         'saved' => 'Pengeluaran berulang berhasil ditambahkan!',
         'updated' => 'Berhasil diperbarui!',
         'deleted' => 'Pengeluaran berulang berhasil dihapus!',
-        'paid' => 'Bayar & Perbarui',
+        'paid' => 'Bayar',
         'paid_success' => 'Pembayaran tercatat!',
         'delete_confirm_title' => 'Hapus Pengeluaran Berulang?',
         'delete_confirm_message' => 'Yakin ingin menghapus ":name" dari daftar berulang? Tindakan ini tidak dapat dibatalkan.',
@@ -182,6 +216,8 @@ return [
         'inactive' => 'Nonaktif',
         'due' => 'Jatuh Tempo',
         'overdue' => 'Terlewat',
+        'cancel_form_title' => 'Batalkan Pengisian?',
+        'cancel_form_message' => 'Data yang belum disimpan akan hilang. Yakin ingin kembali?',
     ],
 
     // Reports
@@ -206,6 +242,12 @@ return [
         'preview' => 'Pratinjau',
         'no_data' => 'Belum ada data untuk bulan ini.',
         'no_expenses_month' => 'Belum ada pengeluaran untuk bulan ini.',
+        'preview_default_filename' => 'laporan-pengeluaran.pdf',
+        'preview_subtitle' => 'Pratinjau Laporan Pengeluaran',
+        'preview_download' => 'Download',
+        'preview_close' => 'Tutup pratinjau',
+        'preview_loading' => 'Memuat pratinjau…',
+        'preview_iframe_title' => 'Pratinjau Laporan PDF',
     ],
 
     // Categories
@@ -226,6 +268,11 @@ return [
         'delete_confirm_message' => 'Yakin ingin menghapus kategori ":name"? Kategori yang masih memiliki pengeluaran tidak dapat dihapus.',
         'cannot_delete' => 'Kategori tidak dapat dihapus karena masih memiliki pengeluaran.',
         'default_categories' => 'Kategori Default',
+        'name_placeholder' => 'cth: Transportasi',
+        'list_title' => 'Daftar Kategori',
+        'expenses_count_suffix' => 'pengeluaran',
+        'no_categories' => 'Belum ada kategori. Tambahkan kategori pertama di atas.',
+        'delete_confirm_text' => 'Ya, Hapus',
     ],
 
     // Profile
@@ -241,10 +288,20 @@ return [
         'update_profile' => 'Simpan Perubahan',
         'google_user_note' => 'Akun Google tidak memiliki kata sandi.',
         'google_sync' => 'Sinkronkan dengan Google',
+        'google_synced' => 'Data profil berhasil disinkronkan dari Google!',
         'profile_updated' => 'Profil berhasil diperbarui!',
         'password_updated' => 'Kata sandi berhasil diubah!',
         'password_mismatch' => 'Kata sandi saat ini tidak cocok.',
         'avatar_uploaded' => 'Foto profil berhasil diunggah!',
+        'my_title' => 'Profil Saya',
+        'connected_google' => 'Terhubung dengan Google',
+        'avatar_help' => 'JPG, PNG, atau WEBP maks 1 MB. Disimpan sebagai data di database.',
+        'google_password_note' => 'Akun Google: langsung set kata sandi baru tanpa kata sandi lama.',
+        'password_help' => 'Minimal 10 karakter, wajib huruf besar, huruf kecil, angka, dan simbol. Kosongkan agar tidak diubah.',
+        'save_profile' => 'Simpan Profil',
+        'google_sync_title' => 'Sinkronkan dari Google',
+        'google_sync_desc' => 'Ambil otomatis nama, email, dan foto profil dari akun Google kamu.',
+        'avatar_size_alert' => 'Ukuran foto maksimal 1 MB.',
     ],
 
     // Validation
