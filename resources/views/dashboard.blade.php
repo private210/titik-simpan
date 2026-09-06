@@ -3,7 +3,7 @@
 @section('title', __('messages.dashboard.title') . ' - Titik Simpan')
 
 @section('content')
-<div class="space-y-4 md:space-y-0">
+<div class="space-y-4 md:space-y-6">
     <div class="flex justify-between items-center mb-4 md:mb-2">
         <div>
             <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.dashboard.title') }}</h1>
