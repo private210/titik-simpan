@@ -8,12 +8,12 @@
     .acc-open .acc-btn:after { transform: rotate(45deg); }
     .acc-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
     .acc-open .acc-panel { max-height: 220px; }
+    main { max-width: none !important; }
 </style>
 
 <section id="hero" class="relative overflow-hidden">
     <div id="aurora-container" class="absolute inset-0 pointer-events-none opacity-70" style="z-index:0"></div>
-    <div class="absolute inset-0 bg-gradient-to-br from-[#BDE0D2]/40 via-transparent to-[#1BA37A]/10 dark:from-[#1BA37A]/20 dark:to-transparent pointer-events-none"></div>
-    <div class="relative max-w-4xl mx-auto text-center py-14 md:py-24 px-4">
+    <div class="relative mx-auto text-center py-14 md:py-24 px-4">
         <div id="hero-logo-wrap" class="inline-block" style="transform-style:preserve-3d; transition: transform .18s ease-out; will-change:transform">
             <img id="hero-logo" src="/assets/logo-light.png" alt="Titik Simpan" class="h-20 md:h-28 mx-auto mb-6 drop-shadow-[0_8px_20px_rgba(27,163,122,0.4)]">
         </div>
@@ -40,19 +40,19 @@
         </div>
 
         <div class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
-            <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur rounded-2xl border border-gray-200 dark:border-gray-700 p-4">
+            <div>
                 <p class="text-2xl font-bold text-[#1BA37A]">6</p>
                 <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Kategori default</p>
             </div>
-            <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur rounded-2xl border border-gray-200 dark:border-gray-700 p-4">
+            <div>
                 <p class="text-2xl font-bold text-[#1BA37A]">3+</p>
                 <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Laporan lengkap</p>
             </div>
-            <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur rounded-2xl border border-gray-200 dark:border-gray-700 p-4">
+            <div>
                 <p class="text-2xl font-bold text-[#1BA37A]">2</p>
                 <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Bahasa (ID/EN)</p>
             </div>
-            <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur rounded-2xl border border-gray-200 dark:border-gray-700 p-4">
+            <div>
                 <p class="text-2xl font-bold text-[#1BA37A]">100%</p>
                 <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Gratis</p>
             </div>
@@ -75,7 +75,7 @@
             ];
             @endphp
             @foreach($features as $f)
-                <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-5 hover:shadow-md transition-all">
+                <div class="p-5 border-b border-gray-200 dark:border-gray-700">
                     <div class="w-11 h-11 rounded-xl bg-[#BDE0D2] dark:bg-[#1BA37A]/25 flex items-center justify-center mb-3">
                         <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $f['icon'] }}"/></svg>
                     </div>
@@ -87,8 +87,8 @@
     </div>
 </section>
 
-<section class="py-12 md:py-16 bg-white dark:bg-gray-800/50 border-y border-gray-200 dark:border-gray-700">
-    <div class="max-w-4xl mx-auto px-4">
+<section class="py-12 md:py-16">
+    <div class="mx-auto px-4">
         <h2 class="text-2xl md:text-3xl font-brand text-center text-gray-900 dark:text-white mb-10">Cara Kerja</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="text-center">
@@ -125,8 +125,8 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-                <div class="acc-item bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <button type="button" onclick="toggleFaq(this)" class="acc-btn w-full text-left px-5 py-4 font-medium text-gray-900 dark:text-white text-sm md:text-base">
+                <div class="acc-item border-b border-gray-200 dark:border-gray-700">
+                    <button type="button" onclick="toggleFaq(this)" class="acc-btn w-full text-left py-4 font-medium text-gray-900 dark:text-white text-sm md:text-base px-1">
                         {{ $faq['q'] }}
                     </button>
                     <div class="acc-panel px-5 pb-4 text-sm text-gray-500 dark:text-gray-400">
@@ -138,15 +138,15 @@
     </div>
 </section>
 
-<section id="kontak" class="py-12 md:py-16 bg-white dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700">
-    <div class="max-w-lg mx-auto px-4">
+<section id="kontak" class="py-12 md:py-16">
+    <div class="mx-auto px-4 max-w-lg">
         <h2 class="text-2xl md:text-3xl font-brand text-center text-gray-900 dark:text-white mb-2">Hubungi Kami</h2>
         <p class="text-center text-sm text-gray-500 dark:text-gray-400 mb-8">
             Punya pertanyaan atau saran? Kirim pesan ke
             <a href="mailto:pname210@gmail.com" class="text-[#1BA37A] dark:text-[#6EE7B0] font-medium hover:underline">pname210@gmail.com</a>
         </p>
 
-        <form id="contact-form" class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 space-y-4">
+        <form id="contact-form" class="space-y-4">
             <div>
                 <label for="c-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama</label>
                 <input id="c-name" type="text" required placeholder="Nama kamu"
