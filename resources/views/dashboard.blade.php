@@ -15,7 +15,7 @@
         </button>
     </div>
 
-    <div class="fade-in-card rounded-2xl p-5 md:p-6 {{ $greetingBg }} {{ $greetingShadow }} ring-1 ring-black/10 dark:ring-white/10 mb-1 md:mb-1">
+    <div class="fade-in-card rounded-2xl p-5 md:p-6 {{ $greetingBg }} {{ $greetingShadow }} ring-1 ring-black/10 dark:ring-white/10 mb-4 md:mb-6">
         <div class="flex items-center gap-3.5 flex-wrap md:flex-nowrap">
             <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
                 <svg class="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
