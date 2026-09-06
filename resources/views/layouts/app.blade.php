@@ -389,6 +389,8 @@
             if (logo) logo.src = resolved === 'dark' ? '/assets/logo-dark.webp' : '/assets/logo-light.webp';
             var footerLogo = document.getElementById('footer-logo');
             if (footerLogo) footerLogo.src = resolved === 'dark' ? '/assets/icon-dark.svg' : '/assets/icon-light.svg';
+            var heroLogo = document.getElementById('hero-logo');
+            if (heroLogo) heroLogo.src = resolved === 'dark' ? '/assets/logo-dark.png' : '/assets/logo-light.png';
         }
         function setTheme(theme) { localStorage.setItem('theme', theme); applyTheme(theme); }
         function updateThemeIcon(resolved) {
