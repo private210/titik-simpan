@@ -4,6 +4,12 @@
 
 @section('content')
 <div class="space-y-4 md:space-y-6">
+    @if(auth()->user()->email === \Database\Seeders\DemoAccountSeeder::DEMO_EMAIL)
+        <div class="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl px-4 py-3">
+            <svg class="w-5 h-5 text-blue-500 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <p class="text-xs md:text-sm text-blue-700 dark:text-blue-300 font-medium">Ini adalah halaman <strong>mode demo</strong>. Semua perubahan data tidak disimpan. Klik tombol Login di navbar untuk masuk dengan akun sendiri.</p>
+        </div>
+    @endif
     <div class="flex justify-between items-center mb-4 md:mb-2">
         <div>
             <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.dashboard.title') }}</h1>
