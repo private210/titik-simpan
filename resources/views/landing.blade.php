@@ -11,18 +11,18 @@
     main { max-width: none !important; }
 </style>
 
-<section id="hero" class="relative overflow-hidden">
+<section id="hero" class="relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
     <div id="aurora-container" class="absolute inset-0 pointer-events-none opacity-70" style="z-index:0"></div>
     <div class="relative mx-auto text-center py-14 md:py-24 px-4">
         <div id="hero-logo-wrap" class="inline-block" style="transform-style:preserve-3d; transition: transform .18s ease-out; will-change:transform">
             <img id="hero-logo" src="/assets/logo-light.png" alt="Titik Simpan" class="h-28 md:h-40 mx-auto mb-8 drop-shadow-[0_8px_20px_rgba(27,163,122,0.4)]">
         </div>
-        <h1 class="text-3xl md:text-5xl font-brand text-gray-900 dark:text-white leading-tight">
+        <h1 class="text-[26px] md:text-[44px] font-brand text-gray-900 dark:text-white leading-tight">
             Catat <span class="text-[#1BA37A]">Sekarang</span>,<br>
             Hemat <span class="text-[#1BA37A]">Hari Ini</span>,<br>
             Untuk <span class="text-[#1BA37A]">Masa Depan</span> Yang Lebih Baik
         </h1>
-        <p class="mt-5 text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
+        <p class="mt-5 text-[14px] md:text-[16px] text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
             Aplikasi budget tracker sederhana untuk mencatat pemasukan, mengalokasikan anggaran,
             dan mengontrol pengeluaran bulanan Anda.
         </p>
