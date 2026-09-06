@@ -38,23 +38,23 @@
             <p class="text-sm md:text-2xl font-bold text-gray-900 dark:text-white truncate mt-1" data-count="{{ $totalIncome }}">Rp {{ number_format($totalIncome, 0, ',', '.') }}</p>
         </div>
         <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-2">
+            @php $remaining = $totalIncome - $totalExpenses; @endphp
+            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">{{ __('messages.reports.remaining') }}</p>
+            <p class="text-sm md:text-2xl font-bold {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $remaining }}">
+                Rp {{ number_format($remaining, 0, ',', '.') }}
+            </p>
+        </div>
+        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-2">
             <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">{{ __('messages.reports.expenses') }}</p>
             <p class="text-sm md:text-2xl font-bold text-red-600 dark:text-red-400 truncate mt-1" data-count="{{ $totalExpenses }}">Rp {{ number_format($totalExpenses, 0, ',', '.') }}</p>
         </div>
-        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-2">
+        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-3">
             <p class="text-[10px] md:text-sm text-blue-600 dark:text-blue-400">{{ __('messages.reports.recurring_expenses') }}</p>
             <p class="text-sm md:text-2xl font-bold text-blue-600 dark:text-blue-400 truncate mt-1" data-count="{{ $totalRecurring }}">Rp {{ number_format($totalRecurring, 0, ',', '.') }}</p>
         </div>
         <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-3">
             <p class="text-[10px] md:text-sm text-orange-600 dark:text-orange-400">{{ __('messages.reports.other_expenses') }}</p>
             <p class="text-sm md:text-2xl font-bold text-orange-600 dark:text-orange-400 truncate mt-1" data-count="{{ $totalNonRecurring }}">Rp {{ number_format($totalNonRecurring, 0, ',', '.') }}</p>
-        </div>
-        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-3">
-            @php $remaining = $totalIncome - $totalExpenses; @endphp
-            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">{{ __('messages.reports.remaining') }}</p>
-            <p class="text-sm md:text-2xl font-bold {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $remaining }}">
-                Rp {{ number_format($remaining, 0, ',', '.') }}
-            </p>
         </div>
     </div>
 
@@ -193,17 +193,17 @@
                     <table class="w-full mobile-card-table">
                         <thead>
                             <tr class="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                                <th class="pb-2 font-medium">{{ __('messages.reports.date') }}</th>
+                                <th class="pb-2 font-medium">{{ __('messages.expenses.category') }}</th>
                                 <th class="pb-2 font-medium text-right">{{ __('messages.reports.expenses') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($recurringExpensesList as $e)
                                 <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0">
-                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="{{ __('messages.reports.date') }}">
+                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="{{ __('messages.expenses.category') }}">
                                         <div class="flex items-center gap-2">
                                             <span>{{ $e->category->icon ?? '' }}</span>
-                                            <span>{{ $e->description }}</span>
+                                            <span>{{ $e->category->name ?? $e->description }}</span>
                                         </div>
                                     </td>
                                     <td class="py-2 text-xs md:text-sm text-right font-medium text-gray-900 dark:text-white" data-label="{{ __('messages.reports.expenses') }}">Rp {{ number_format($e->amount, 0, ',', '.') }}</td>
@@ -228,17 +228,17 @@
                     <table class="w-full mobile-card-table">
                         <thead>
                             <tr class="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                                <th class="pb-2 font-medium">{{ __('messages.reports.date') }}</th>
+                                <th class="pb-2 font-medium">{{ __('messages.expenses.category') }}</th>
                                 <th class="pb-2 font-medium text-right">{{ __('messages.reports.expenses') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($otherExpensesList as $e)
                                 <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0">
-                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="{{ __('messages.reports.date') }}">
+                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="{{ __('messages.expenses.category') }}">
                                         <div class="flex items-center gap-2">
                                             <span>{{ $e->category->icon ?? '' }}</span>
-                                            <span>{{ $e->description }}</span>
+                                            <span>{{ $e->category->name ?? $e->description }}</span>
                                         </div>
                                     </td>
                                     <td class="py-2 text-xs md:text-sm text-right font-medium text-gray-900 dark:text-white" data-label="{{ __('messages.reports.expenses') }}">Rp {{ number_format($e->amount, 0, ',', '.') }}</td>
