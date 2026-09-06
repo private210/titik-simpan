@@ -150,27 +150,10 @@
                         </div>
                     </div>
                     <div class="relative" id="theme-wrap">
-                        <button onclick="toggleThemeMenu(event)" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-all btn-press shadow-md shadow-black/10 dark:shadow-black/40 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:shadow-lg" title="{{ __('messages.theme.title') }}" aria-label="{{ __('messages.theme.title') }}">
+                        <button onclick="cycleTheme()" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-all btn-press shadow-md shadow-black/10 dark:shadow-black/40 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:shadow-lg" title="{{ __('messages.theme.title') }}" aria-label="{{ __('messages.theme.title') }}">
                             <svg id="theme-icon-dark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                             <svg id="theme-icon-light" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                         </button>
-                        <div id="theme-menu" class="hidden absolute right-0 mt-2 w-44 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
-                            <button onclick="selectTheme('light')" data-theme="light" class="theme-opt w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                                {{ __('messages.theme.light') }}
-                                <svg class="theme-check w-4 h-4 ml-auto hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            </button>
-                            <button onclick="selectTheme('dark')" data-theme="dark" class="theme-opt w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-t border-gray-100 dark:border-gray-700">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-                                {{ __('messages.theme.dark') }}
-                                <svg class="theme-check w-4 h-4 ml-auto hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            </button>
-                            <button onclick="selectTheme('auto')" data-theme="auto" class="theme-opt w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-t border-gray-100 dark:border-gray-700">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                {{ __('messages.theme.system') }}
-                                <svg class="theme-check w-4 h-4 ml-auto hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            </button>
-                        </div>
                     </div>
                     @guest
                         <a href="{{ route('login') }}" class="px-4 py-2 rounded-2xl text-sm font-medium text-[#1BA37A] dark:text-[#6EE7B0] border border-[#1BA37A]/40 dark:border-[#6EE7B0]/40 hover:bg-[#1BA37A]/10 transition-all btn-press">
@@ -393,7 +376,6 @@
             var resolved = resolveTheme(theme);
             document.documentElement.classList.toggle('dark', resolved === 'dark');
             updateThemeIcon(resolved);
-            updateThemeChecks(theme);
             var logo = document.getElementById('navbar-logo');
             if (logo) logo.src = resolved === 'dark' ? '/assets/logo-dark.webp' : '/assets/logo-light.webp';
             var footerLogo = document.getElementById('footer-logo');
@@ -407,30 +389,17 @@
             darkIcon.classList.toggle('hidden', resolved === 'dark');
             lightIcon.classList.toggle('hidden', resolved === 'light');
         }
-        function updateThemeChecks(theme) {
-            document.querySelectorAll('.theme-opt').forEach(function(btn) {
-                var active = btn.getAttribute('data-theme') === theme;
-                btn.querySelector('.theme-check').classList.toggle('hidden', !active);
-            });
-        }
-        function toggleThemeMenu(e) {
-            e.stopPropagation();
-            var menu = document.getElementById('theme-menu');
-            if (menu) menu.classList.toggle('hidden');
-        }
-        function selectTheme(theme) {
-            setTheme(theme);
-            document.getElementById('theme-menu').classList.add('hidden');
+        var _themeOrder = ['auto','light','dark'];
+        function cycleTheme() {
+            var cur = getTheme();
+            var idx = _themeOrder.indexOf(cur);
+            var next = _themeOrder[(idx + 1) % _themeOrder.length];
+            setTheme(next);
         }
         if (_mql.addEventListener) _mql.addEventListener('change', function() { if (getTheme() === 'auto') applyTheme('auto'); });
         applyTheme(getTheme());
 
         document.addEventListener('click', function(e) {
-            var wrap = document.getElementById('theme-wrap');
-            if (wrap && !wrap.contains(e.target)) {
-                var menu = document.getElementById('theme-menu');
-                if (menu) menu.classList.add('hidden');
-            }
             var langWrap = document.getElementById('lang-wrap');
             if (langWrap && !langWrap.contains(e.target)) {
                 var langMenu = document.getElementById('lang-menu');
