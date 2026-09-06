@@ -15,7 +15,7 @@
         </button>
     </div>
 
-    <div class="fade-in-card rounded-2xl p-5 md:p-6 {{ $greetingBg }} {{ $greetingShadow }} ring-1 ring-black/10 dark:ring-white/10 mb-4 md:mb-2">
+    <div class="fade-in-card rounded-2xl p-5 md:p-6 {{ $greetingBg }} {{ $greetingShadow }} ring-1 ring-black/10 dark:ring-white/10 mb-1 md:mb-1">
         <div class="flex items-center gap-3.5 flex-wrap md:flex-nowrap">
             <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
                 <svg class="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -70,6 +70,13 @@
                     <p class="text-sm md:text-xl font-bold text-blue-600 dark:text-blue-400 truncate mt-1" data-count="{{ $totalAllocated }}">Rp {{ number_format($totalAllocated, 0, ',', '.') }}</p>
                 </div>
                 <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
+                    <div class="w-9 h-9 rounded-xl {{ $remaining >= 0 ? 'bg-green-100 dark:bg-green-900/40' : 'bg-red-100 dark:bg-red-900/40' }} flex items-center justify-center mb-3">
+                        <svg class="w-4 h-4 {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ __('messages.dashboard.remaining_salary') }}</p>
+                    <p class="text-sm md:text-xl font-bold {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $remaining }}">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
+                </div>
+                <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
                     <div class="w-9 h-9 rounded-xl bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center mb-3">
                         <svg class="w-4 h-4 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     </div>
@@ -82,13 +89,6 @@
                     </div>
                     <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ __('messages.dashboard.remaining_allocation') }}</p>
                     <p class="text-sm md:text-xl font-bold {{ $sisaAlokasi >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $sisaAlokasi }}">Rp {{ number_format($sisaAlokasi, 0, ',', '.') }}</p>
-                </div>
-                <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
-                    <div class="w-9 h-9 rounded-xl {{ $remaining >= 0 ? 'bg-green-100 dark:bg-green-900/40' : 'bg-red-100 dark:bg-red-900/40' }} flex items-center justify-center mb-3">
-                        <svg class="w-4 h-4 {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ __('messages.dashboard.remaining_salary') }}</p>
-                    <p class="text-sm md:text-xl font-bold {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $remaining }}">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
                 </div>
             </div>
 
@@ -121,39 +121,6 @@
                     </div>
                 </div>
             @endif
-
-            <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                        <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
-                        {{ __('messages.dashboard.recent_expenses') }}
-                    </h2>
-                    <a href="{{ route('expenses.create') }}" class="bg-[#1BA37A] text-white px-3 md:px-4 py-2 rounded-2xl text-sm hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press inline-block shadow-sm">
-                        {{ __('messages.dashboard.add_expense') }}
-                    </a>
-                </div>
-                @if($recentExpenses->count() > 0)
-                    <div class="space-y-2 max-h-[300px] overflow-y-auto scrollbar-hide">
-                        @foreach($recentExpenses as $expense)
-                            <div class="flex items-center gap-3 p-3 rounded-2xl border border-gray-100 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-700/20 hover:bg-gray-100 dark:hover:bg-gray-700/40 transition-all">
-                                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0" style="background-color: {{ $expense->category->color }}15;">
-                                    {{ $expense->category->icon }}
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ $expense->description }}</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $expense->spent_at->format('d M Y') }} • {{ $expense->category->name }}</p>
-                                </div>
-                                <p class="text-sm font-semibold text-red-600 dark:text-red-400 shrink-0">- Rp {{ number_format($expense->amount, 0, ',', '.') }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="text-center py-8">
-                        <svg class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('messages.dashboard.no_expenses') }}</p>
-                    </div>
-                @endif
-            </div>
         </div>
 
         <div class="space-y-4">
@@ -163,7 +130,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
                         {{ __('messages.dashboard.due_bills') }}
                     </h2>
-                    <div class="space-y-2 md:space-y-3">
+                    <div class="space-y-2 md:space-y-3 max-h-[240px] overflow-y-auto scrollbar-hide pr-1">
                         @foreach($dueRecurring as $recurring)
                             <div class="flex items-center gap-3 bg-white dark:bg-gray-800 rounded-2xl p-3 md:p-4 border border-orange-100 dark:border-orange-800 shadow-sm">
                                 <div class="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center shrink-0">
@@ -184,6 +151,39 @@
                     </div>
                 </div>
             @endif
+
+            <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
+                        {{ __('messages.dashboard.recent_expenses') }}
+                    </h2>
+                    <a href="{{ route('expenses.create') }}" class="bg-[#1BA37A] text-white px-3 md:px-4 py-2 rounded-2xl text-sm hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press inline-block shadow-sm">
+                        {{ __('messages.dashboard.add_expense') }}
+                    </a>
+                </div>
+                @if($recentExpenses->count() > 0)
+                    <div class="space-y-2 max-h-[300px] overflow-y-auto scrollbar-hide pr-1">
+                        @foreach($recentExpenses as $expense)
+                            <div class="flex items-center gap-3 p-3 rounded-2xl border border-gray-100 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-700/20 hover:bg-gray-100 dark:hover:bg-gray-700/40 transition-all">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0" style="background-color: {{ $expense->category->color }}15;">
+                                    {{ $expense->category->icon }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ $expense->description }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $expense->spent_at->format('d M Y') }} • {{ $expense->category->name }}</p>
+                                </div>
+                                <p class="text-sm font-semibold text-red-600 dark:text-red-400 shrink-0">- Rp {{ number_format($expense->amount, 0, ',', '.') }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center py-8">
+                        <svg class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('messages.dashboard.no_expenses') }}</p>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 </div>

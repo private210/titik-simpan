@@ -32,26 +32,26 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
-            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">{{ __('messages.reports.salary') }}</p>
-            <p class="text-sm md:text-2xl font-bold text-gray-900 dark:text-white truncate mt-1" data-count="{{ $salary?->amount ?? 0 }}">Rp {{ number_format($salary?->amount ?? 0, 0, ',', '.') }}</p>
+    <div class="grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4">
+        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-2">
+            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">{{ __('messages.dashboard.total_income') }}</p>
+            <p class="text-sm md:text-2xl font-bold text-gray-900 dark:text-white truncate mt-1" data-count="{{ $totalIncome }}">Rp {{ number_format($totalIncome, 0, ',', '.') }}</p>
         </div>
-        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
+        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-2">
             <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">{{ __('messages.reports.expenses') }}</p>
             <p class="text-sm md:text-2xl font-bold text-red-600 dark:text-red-400 truncate mt-1" data-count="{{ $totalExpenses }}">Rp {{ number_format($totalExpenses, 0, ',', '.') }}</p>
         </div>
-        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
+        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-2">
             <p class="text-[10px] md:text-sm text-blue-600 dark:text-blue-400">{{ __('messages.reports.recurring_expenses') }}</p>
             <p class="text-sm md:text-2xl font-bold text-blue-600 dark:text-blue-400 truncate mt-1" data-count="{{ $totalRecurring }}">Rp {{ number_format($totalRecurring, 0, ',', '.') }}</p>
         </div>
-        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
+        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-3">
             <p class="text-[10px] md:text-sm text-orange-600 dark:text-orange-400">{{ __('messages.reports.other_expenses') }}</p>
             <p class="text-sm md:text-2xl font-bold text-orange-600 dark:text-orange-400 truncate mt-1" data-count="{{ $totalNonRecurring }}">Rp {{ number_format($totalNonRecurring, 0, ',', '.') }}</p>
         </div>
-        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-4">
+        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-3">
+            @php $remaining = $totalIncome - $totalExpenses; @endphp
             <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">{{ __('messages.reports.remaining') }}</p>
-            @php $remaining = ($salary?->amount ?? 0) - $totalExpenses; @endphp
             <p class="text-sm md:text-2xl font-bold {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $remaining }}">
                 Rp {{ number_format($remaining, 0, ',', '.') }}
             </p>
@@ -111,6 +111,7 @@
         </div>
     </div>
 
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
     <div id="top-expenses" class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
         <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
             <svg class="w-5 h-5 text-red-500 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17V9m0 0L9 13m4-4l4 4M20 12a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
@@ -177,6 +178,7 @@
                 <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('messages.reports.no_expenses_month') }}</p>
             </div>
         @endif
+    </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">

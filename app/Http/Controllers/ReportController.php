@@ -94,6 +94,16 @@ class ReportController extends Controller
             'days' => $days,
         ];
 
+        $hasAdditional = \Illuminate\Support\Facades\Schema::hasTable('additional_incomes');
+        $totalAdditionalIncome = $hasAdditional
+            ? \App\Models\AdditionalIncome::whereBetween('received_at', [$startDate, $endDate])->sum('amount')
+            : 0;
+
+        $salary = Salary::where('received_at', '>=', $startDate)
+            ->where('received_at', '<=', $endDate)
+            ->first();
+        $salaryAmount = (int) ($salary?->amount ?? 0);
+
         return [
             'startDate' => $startDate,
             'endDate' => $endDate,
@@ -102,9 +112,10 @@ class ReportController extends Controller
             'totalExpenses' => $total,
             'totalRecurring' => $totalRecurring,
             'totalNonRecurring' => $totalNonRecurring,
-            'salary' => Salary::where('received_at', '>=', $startDate)
-                ->where('received_at', '<=', $endDate)
-                ->first(),
+            'salary' => $salary,
+            'salaryAmount' => $salaryAmount,
+            'totalAdditionalIncome' => $totalAdditionalIncome,
+            'totalIncome' => $salaryAmount + $totalAdditionalIncome,
             'categoryBreakdown' => $categoryBreakdown,
             'dailyExpenses' => $dailyExpenses,
             'charts' => $charts,
