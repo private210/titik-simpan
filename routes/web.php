@@ -48,8 +48,16 @@ Route::get('/demo', function () {
     $user = User::where('email', \Database\Seeders\DemoAccountSeeder::DEMO_EMAIL)->first();
 
     if (! $user) {
-        Artisan::call('db:seed', ['--class' => \Database\Seeders\DemoAccountSeeder::class, '--force' => true]);
+        try {
+            Artisan::call('db:seed', ['--class' => \Database\Seeders\DemoAccountSeeder::class, '--force' => true]);
+        } catch (\Throwable $e) {
+            report($e);
+        }
         $user = User::where('email', \Database\Seeders\DemoAccountSeeder::DEMO_EMAIL)->first();
+    }
+
+    if (! $user) {
+        return redirect('/')->with('error', __('messages.demo.action_blocked'));
     }
 
     Auth::loginUsingId($user->id);
