@@ -70,7 +70,11 @@ Route::get('/', function () {
     if (auth()->check()) {
         return app(DashboardController::class)->index(request());
     }
-    return view('landing');
+
+    return response()->view('landing')->withHeaders([
+        'Cache-Control' => 'public, max-age=600, s-maxage=600, stale-while-revalidate=86400',
+        'Vary' => 'Accept-Encoding',
+    ]);
 })->name('dashboard');
 
 Route::get('/seed-demo', function () {
