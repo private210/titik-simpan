@@ -56,7 +56,7 @@ class BudgetController extends Controller
         }
 
         return redirect()->route('budget.index')
-            ->with('success', 'Gaji berhasil disimpan!');
+            ->with('success', __('messages.budget.salary_saved'));
     }
 
     public function allocate(Request $request)
@@ -84,13 +84,13 @@ class BudgetController extends Controller
         });
 
         return redirect()->route('budget.index')
-            ->with('success', 'Alokasi budget berhasil disimpan!');
+            ->with('success', __('messages.budget.allocation_saved'));
     }
 
     public function storeAdditionalIncome(Request $request)
     {
         if (! Schema::hasTable('additional_incomes')) {
-            return back()->with('error', 'Fitur ini belum tersedia. Jalankan migrasi terlebih dahulu.');
+            return back()->with('error', __('messages.budget.additional_unavailable'));
         }
 
         $validated = $request->validate([
@@ -102,6 +102,6 @@ class BudgetController extends Controller
         AdditionalIncome::create($validated);
 
         return redirect()->route('budget.index')
-            ->with('success', 'Pendapatan tambahan berhasil disimpan!');
+            ->with('success', __('messages.budget.additional_saved'));
     }
 }

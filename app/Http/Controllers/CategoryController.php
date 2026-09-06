@@ -27,7 +27,7 @@ class CategoryController extends Controller
 
         Category::create($validated);
 
-        return back()->with('success', 'Kategori berhasil ditambahkan!');
+        return back()->with('success', __('messages.categories.saved'));
     }
 
     public function update(Request $request, Category $category)
@@ -40,17 +40,17 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return back()->with('success', 'Kategori berhasil diperbarui!');
+        return back()->with('success', __('messages.categories.updated'));
     }
 
     public function destroy(Category $category)
     {
         if ($category->expenses()->exists()) {
-            return back()->with('error', 'Kategori tidak bisa dihapus karena masih memiliki pengeluaran.');
+            return back()->with('error', __('messages.categories.cannot_delete'));
         }
 
         $category->delete();
 
-        return back()->with('success', 'Kategori berhasil dihapus!');
+        return back()->with('success', __('messages.categories.deleted'));
     }
 }

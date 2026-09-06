@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(SecurityHeaders::class);
+        $middleware->redirectGuestsTo(fn () => url('/demo'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

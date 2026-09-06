@@ -1,28 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - Budget Tracker')
+@section('title', __('messages.dashboard.title') . ' - Titik Simpan')
 
 @section('content')
 <div class="space-y-4 md:space-y-0">
-    <div class="flex justify-between items-center mb-4 md:mb-0">
+    <div class="flex justify-between items-center mb-4 md:mb-2">
         <div>
-            <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+            <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.dashboard.title') }}</h1>
             <p id="dashboard-month" class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1"></p>
         </div>
         <button onclick="confirmReset()" class="text-xs md:text-sm text-red-500 hover:text-red-600 dark:text-red-400 font-medium flex items-center gap-1.5 btn-press transition-all">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            Reset Data
+            {{ __('messages.dashboard.reset_data') }}
         </button>
     </div>
 
-    <div class="fade-in-card rounded-2xl p-5 md:p-6 bg-[#1BA37A] shadow-[0_12px_32px_-10px_rgba(27,163,122,0.6)] ring-1 ring-black/10 dark:ring-white/10 mb-4 md:mb-0">
+    <div class="fade-in-card rounded-2xl p-5 md:p-6 {{ $greetingBg }} {{ $greetingShadow }} ring-1 ring-black/10 dark:ring-white/10 mb-4 md:mb-2">
         <div class="flex items-center gap-3.5 flex-wrap md:flex-nowrap">
             <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
                 <svg class="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <div class="min-w-0">
                 <p class="text-white/70 font-slogan text-xs leading-tight">{{ $timeGreeting }}, {{ $greetingName }}!</p>
-                <p class="mt-0.5 {{ $motivationColor }} font-slogan text-sm md:text-base leading-snug {{ $motivationBg }} rounded-xl px-2 py-0.5 -mx-2">{{ $motivation }}</p>
+                <p class="mt-0.5 text-white/85 font-slogan text-sm md:text-base leading-snug {{ $motivationBg }} rounded-xl px-2 py-0.5 -mx-2">{{ $motivation }}</p>
             </div>
             <div class="w-full md:w-auto mt-2 md:mt-0 md:ml-auto">
                 <p class="md:text-right inline-flex md:inline-flex items-center gap-1.5 bg-white/15 text-white rounded-full px-3 py-1 text-xs md:text-sm font-slogan">
@@ -38,43 +38,57 @@
             <div class="w-12 h-12 rounded-2xl bg-yellow-100 dark:bg-yellow-800/50 flex items-center justify-center mx-auto mb-3">
                 <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
-            <p class="text-yellow-800 dark:text-yellow-300 font-medium text-sm md:text-base">Belum ada data gaji bulan ini.</p>
+            <p class="text-yellow-800 dark:text-yellow-300 font-medium text-sm md:text-base">{{ __('messages.dashboard.no_salary') }}</p>
             <a href="{{ route('budget.index') }}" class="mt-3 inline-block bg-yellow-500 text-white px-6 py-2.5 rounded-2xl hover:bg-yellow-600 active:bg-yellow-700 transition-all btn-press text-sm md:text-base font-medium shadow-sm">
-                Atur Budget Sekarang
+                {{ __('messages.dashboard.setup_budget') }}
             </a>
         </div>
     @endif
 
-    <div id="bento-layout" class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-4">
+    <div id="bento-layout" class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-2">
         <div class="lg:col-span-2 space-y-4">
-            <div class="grid grid-cols-2 gap-3 md:gap-4">
+            <div class="grid grid-cols-3 gap-3 md:gap-4">
                 <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
                     <div class="w-9 h-9 rounded-xl bg-[#BDE0D2] dark:bg-[#1BA37A]/25 flex items-center justify-center mb-3">
                         <svg class="w-4 h-4 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
-                    <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Total Pendapatan</p>
-                    <p class="text-lg md:text-2xl font-bold text-gray-900 dark:text-white truncate mt-1" data-count="{{ $totalIncome }}">Rp {{ number_format($totalIncome, 0, ',', '.') }}</p>
-                </div>
-                <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
-                    <div class="w-9 h-9 rounded-xl {{ $remaining >= 0 ? 'bg-green-100 dark:bg-green-900/40' : 'bg-red-100 dark:bg-red-900/40' }} flex items-center justify-center mb-3">
-                        <svg class="w-4 h-4 {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Sisa Gaji</p>
-                    <p class="text-lg md:text-2xl font-bold {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $remaining }}">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
-                </div>
-                <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
-                    <div class="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center mb-3">
-                        <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    </div>
-                    <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Total Alokasi</p>
-                    <p class="text-lg md:text-2xl font-bold text-blue-600 dark:text-blue-400 truncate mt-1" data-count="{{ $totalAllocated }}">Rp {{ number_format($totalAllocated, 0, ',', '.') }}</p>
+                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ __('messages.dashboard.total_income') }}</p>
+                    <p class="text-sm md:text-xl font-bold text-gray-900 dark:text-white truncate mt-1" data-count="{{ $totalIncome }}">Rp {{ number_format($totalIncome, 0, ',', '.') }}</p>
                 </div>
                 <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
                     <div class="w-9 h-9 rounded-xl bg-red-100 dark:bg-red-900/40 flex items-center justify-center mb-3">
                         <svg class="w-4 h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17V9m0 0L9 13m4-4l4 4M20 12a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
                     </div>
-                    <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Pengeluaran Bulan Ini</p>
-                    <p class="text-lg md:text-2xl font-bold text-red-600 dark:text-red-400 truncate mt-1" data-count="{{ $totalMonthlyExpenses }}">Rp {{ number_format($totalMonthlyExpenses, 0, ',', '.') }}</p>
+                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ __('messages.dashboard.monthly_expenses') }}</p>
+                    <p class="text-sm md:text-xl font-bold text-red-600 dark:text-red-400 truncate mt-1" data-count="{{ $totalMonthlyExpenses }}">Rp {{ number_format($totalMonthlyExpenses, 0, ',', '.') }}</p>
+                </div>
+                <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
+                    <div class="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center mb-3">
+                        <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </div>
+                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ __('messages.dashboard.total_allocation') }}</p>
+                    <p class="text-sm md:text-xl font-bold text-blue-600 dark:text-blue-400 truncate mt-1" data-count="{{ $totalAllocated }}">Rp {{ number_format($totalAllocated, 0, ',', '.') }}</p>
+                </div>
+                <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
+                    <div class="w-9 h-9 rounded-xl bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center mb-3">
+                        <svg class="w-4 h-4 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    </div>
+                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ __('messages.dashboard.spent') }}</p>
+                    <p class="text-sm md:text-xl font-bold text-orange-600 dark:text-orange-400 truncate mt-1" data-count="{{ $totalSpent }}">Rp {{ number_format($totalSpent, 0, ',', '.') }}</p>
+                </div>
+                <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
+                    <div class="w-9 h-9 rounded-xl {{ $sisaAlokasi >= 0 ? 'bg-green-100 dark:bg-green-900/40' : 'bg-red-100 dark:bg-red-900/40' }} flex items-center justify-center mb-3">
+                        <svg class="w-4 h-4 {{ $sisaAlokasi >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ __('messages.dashboard.remaining_allocation') }}</p>
+                    <p class="text-sm md:text-xl font-bold {{ $sisaAlokasi >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $sisaAlokasi }}">Rp {{ number_format($sisaAlokasi, 0, ',', '.') }}</p>
+                </div>
+                <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-5 border border-gray-200 dark:border-gray-700">
+                    <div class="w-9 h-9 rounded-xl {{ $remaining >= 0 ? 'bg-green-100 dark:bg-green-900/40' : 'bg-red-100 dark:bg-red-900/40' }} flex items-center justify-center mb-3">
+                        <svg class="w-4 h-4 {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ __('messages.dashboard.remaining_salary') }}</p>
+                    <p class="text-sm md:text-xl font-bold {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $remaining }}">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
                 </div>
             </div>
 
@@ -82,7 +96,7 @@
                 <div id="alloc-section" class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
                     <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
                         <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                        Alokasi Budget
+                        {{ __('messages.dashboard.budget_allocation') }}
                     </h2>
                     <div class="space-y-3 md:space-y-4">
                         @foreach($allocations as $allocation)
@@ -112,14 +126,14 @@
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                         <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
-                        Pengeluaran Terakhir
+                        {{ __('messages.dashboard.recent_expenses') }}
                     </h2>
                     <a href="{{ route('expenses.create') }}" class="bg-[#1BA37A] text-white px-3 md:px-4 py-2 rounded-2xl text-sm hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press inline-block shadow-sm">
-                        + Tambah
+                        {{ __('messages.dashboard.add_expense') }}
                     </a>
                 </div>
                 @if($recentExpenses->count() > 0)
-                    <div class="space-y-2">
+                    <div class="space-y-2 max-h-[300px] overflow-y-auto scrollbar-hide">
                         @foreach($recentExpenses as $expense)
                             <div class="flex items-center gap-3 p-3 rounded-2xl border border-gray-100 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-700/20 hover:bg-gray-100 dark:hover:bg-gray-700/40 transition-all">
                                 <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0" style="background-color: {{ $expense->category->color }}15;">
@@ -136,7 +150,7 @@
                 @else
                     <div class="text-center py-8">
                         <svg class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada pengeluaran bulan ini.</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('messages.dashboard.no_expenses') }}</p>
                     </div>
                 @endif
             </div>
@@ -147,7 +161,7 @@
                 <div id="due-section" class="fade-in-card bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-800 rounded-2xl p-4 md:p-6">
                     <h2 class="text-base md:text-lg font-semibold text-orange-800 dark:text-orange-300 flex items-center gap-2 mb-3 md:mb-4">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
-                        Tagihan Jatuh Tempo
+                        {{ __('messages.dashboard.due_bills') }}
                     </h2>
                     <div class="space-y-2 md:space-y-3">
                         @foreach($dueRecurring as $recurring)
@@ -162,7 +176,7 @@
                                 <form action="{{ route('recurring.pay', $recurring, false) }}" method="POST" class="shrink-0">
                                     @csrf
                                     <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-2xl text-sm hover:bg-green-600 active:bg-green-700 transition-all btn-press shadow-sm">
-                                        Bayar
+                                        {{ __('messages.recurring.paid') }}
                                     </button>
                                 </form>
                             </div>
@@ -170,46 +184,6 @@
                     </div>
                 </div>
             @endif
-
-            <div id="recent-section" class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
-                <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
-                    <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
-                    Riwayat Pengeluaran
-                </h2>
-                @if($recentExpenses->count() > 0)
-                    <div class="overflow-x-auto max-h-[360px] scrollbar-hide">
-                        <table class="w-full mobile-card-table">
-                            <thead>
-                                <tr class="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                                    <th class="pb-2 font-medium">Deskripsi</th>
-                                    <th class="pb-2 font-medium text-right">Jumlah</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($recentExpenses as $expense)
-                                    <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0">
-                                        <td class="py-2.5 text-xs md:text-sm text-gray-900 dark:text-white" data-label="Deskripsi">
-                                            <div class="flex items-center gap-2">
-                                                <span>{{ $expense->category->icon }}</span>
-                                                <div>
-                                                    <p class="font-medium truncate max-w-[140px]">{{ $expense->description }}</p>
-                                                    <p class="text-[10px] text-gray-400 dark:text-gray-500">{{ $expense->spent_at->format('d M') }}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="py-2.5 text-xs md:text-sm text-right font-semibold text-red-600 dark:text-red-400" data-label="Jumlah">Rp {{ number_format($expense->amount, 0, ',', '.') }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @else
-                    <div class="text-center py-8">
-                        <svg class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada pengeluaran bulan ini.</p>
-                    </div>
-                @endif
-            </div>
         </div>
     </div>
 </div>
@@ -220,10 +194,10 @@
     function confirmReset() {
         showConfirm({
             type: 'danger',
-            title: 'Reset Semua Data?',
-            message: 'Semua gaji, alokasi dana, pengeluaran, dan tagihan berulang akan dihapus permanen. Kategori tetap tersimpan. Ketik HAPUS untuk melanjutkan.',
-            confirmText: 'Hapus Semua',
-            requireText: 'HAPUS',
+            title: '{{ __('messages.dashboard.reset_confirm_title') }}',
+            message: '{{ __('messages.dashboard.reset_confirm_message') }}',
+            confirmText: '{{ __('messages.dashboard.reset_confirm_text') }}',
+            requireText: '{{ __('messages.dashboard.reset_require_text') }}',
             onConfirm: function() {
                 var f = document.createElement('form');
                 f.method = 'POST';
@@ -243,14 +217,16 @@
         var clockEl = document.getElementById('greeting-clock');
         var monthEl = document.getElementById('dashboard-month');
 
-        var days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-        var months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+        var daysArr = @json(__('messages.days'));
+        var monthsArr = @json(__('messages.months'));
+        if (!Array.isArray(daysArr) || daysArr.length !== 7) daysArr = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        if (!Array.isArray(monthsArr) || monthsArr.length !== 12) monthsArr = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
         function pad(n) { return (n < 10 ? '0' : '') + n; }
 
         function updateClock() {
             var now = new Date();
-            var dateStr = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+            var dateStr = daysArr[now.getDay()] + ', ' + now.getDate() + ' ' + monthsArr[now.getMonth()] + ' ' + now.getFullYear();
             var timeStr = pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds()) + ' WIB';
             if (clockEl) clockEl.textContent = dateStr + ' - ' + timeStr;
         }
@@ -261,13 +237,12 @@
         }
         if (monthEl) {
             var now = new Date();
-            monthEl.textContent = months[now.getMonth()] + ' ' + now.getFullYear();
+            monthEl.textContent = monthsArr[now.getMonth()] + ' ' + now.getFullYear();
         }
 
         anime({ targets: '#bento-layout', opacity: [0, 1], translateY: [16, 0], duration: 400, delay: 100, easing: 'easeOutCubic' });
         anime({ targets: '#alloc-section', opacity: [0, 1], translateY: [16, 0], duration: 400, delay: 200, easing: 'easeOutCubic' });
         anime({ targets: '#due-section', opacity: [0, 1], translateY: [16, 0], duration: 400, delay: 300, easing: 'easeOutCubic' });
-        anime({ targets: '#recent-section', opacity: [0, 1], translateY: [16, 0], duration: 400, delay: 400, easing: 'easeOutCubic' });
         anime({ targets: '.alloc-item', opacity: [0, 1], translateX: [-8, 0], duration: 300, delay: anime.stagger(60, { start: 250 }), easing: 'easeOutCubic' });
         anime({ targets: '.alloc-bar', width: (el) => el.dataset.width + '%', duration: 800, delay: anime.stagger(80, { start: 500 }), easing: 'easeOutCubic' });
     });

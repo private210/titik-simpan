@@ -95,6 +95,8 @@ return [
         'reset_data' => 'Reset Data',
         'reset_confirm_title' => 'Reset All Data?',
         'reset_confirm_message' => 'All salary, budget allocations, expenses, and recurring bills will be permanently deleted. Categories will remain.',
+        'reset_confirm_text' => 'Delete All',
+        'reset_require_text' => 'DELETE',
     ],
 
     'budget' => [
@@ -119,6 +121,9 @@ return [
         'save_allocation' => 'Save Allocation',
         'allocation_saved' => 'Budget allocation saved successfully!',
         'additional_unavailable' => 'This feature is not available yet. Run the migration first.',
+        'confirm_save_allocation' => 'Save Allocation?',
+        'confirm_save_allocation_message' => 'Budget allocation will be updated to match the amounts entered.',
+        'hide_allocation' => 'Hide Allocation',
     ],
 
     'expenses' => [
@@ -145,6 +150,9 @@ return [
         'recurring_expenses' => 'Fixed/Recurring',
         'other_expenses' => 'Other Expenses',
         'no_expenses_period' => 'No expenses for this period.',
+        'delete_confirm_title' => 'Delete Expense?',
+        'delete_confirm_message' => 'Are you sure you want to delete ":name"? This action cannot be undone.',
+        'delete_confirm_text' => 'Yes, Delete',
         'description_placeholder' => 'e.g.: Lunch, Gas, etc.',
         'cancel_title' => 'Cancel Entry?',
         'cancel_message' => 'Unsaved data will be lost. Are you sure you want to go back?',
@@ -182,6 +190,13 @@ return [
         'no_recurring' => 'No recurring expenses yet.',
         'cancel_form_title' => 'Cancel Entry?',
         'cancel_form_message' => 'Unsaved data will be lost. Are you sure you want to go back?',
+        'cancel_confirm_title' => 'Cancel Changes?',
+        'cancel_confirm_message' => 'Unsaved changes will be lost.',
+        'delete_confirm_title' => 'Delete Recurring Expense?',
+        'delete_confirm_message' => 'Are you sure you want to delete ":name" from the recurring list? This cannot be undone.',
+        'delete_confirm_text' => 'Yes, Delete',
+        'active' => 'Active',
+        'inactive' => 'Inactive',
     ],
 
     'reports' => [
@@ -201,6 +216,7 @@ return [
         'export_pdf' => 'PDF',
         'export_excel' => 'Excel',
         'no_data' => 'No data for this month yet.',
+        'no_expenses_month' => 'No expenses for this month.',
         'preview_default_filename' => 'expense-report.pdf',
         'preview_subtitle' => 'Expense Report Preview',
         'preview_download' => 'Download',

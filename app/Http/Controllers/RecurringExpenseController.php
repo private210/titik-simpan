@@ -39,7 +39,7 @@ class RecurringExpenseController extends Controller
         RecurringExpense::create($validated);
 
         return redirect()->route('recurring.index')
-            ->with('success', 'Pengeluaran berulang berhasil ditambahkan!');
+            ->with('success', __('messages.recurring.saved'));
     }
 
     public function update(RecurringExpense $recurringExpense, Request $request)
@@ -51,7 +51,7 @@ class RecurringExpenseController extends Controller
 
         $recurringExpense->update($validated);
 
-        return back()->with('success', 'Berhasil diperbarui!');
+        return back()->with('success', __('messages.recurring.updated'));
     }
 
     public function edit(RecurringExpense $recurringExpense)
@@ -65,7 +65,7 @@ class RecurringExpenseController extends Controller
     {
         $recurringExpense->delete();
 
-        return back()->with('success', 'Pengeluaran berulang berhasil dihapus!');
+        return back()->with('success', __('messages.recurring.deleted'));
     }
 
     public function markPaid(RecurringExpense $recurringExpense)
@@ -80,6 +80,6 @@ class RecurringExpenseController extends Controller
 
         $recurringExpense->markAsPaid();
 
-        return back()->with('success', 'Pembayaran tercatat!');
+        return back()->with('success', __('messages.recurring.paid_success'));
     }
 }

@@ -26,6 +26,7 @@ class DashboardController extends Controller
         $totalAllocated = $salary ? $salary->totalAllocated() : 0;
         $totalSpent = $salary ? $salary->totalSpent() : 0;
         $remaining = $salary ? $salary->remaining() : 0;
+        $sisaAlokasi = $totalAllocated - $totalSpent;
 
         $totalMonthlyExpenses = Expense::where('spent_at', '>=', $currentMonthStart)->sum('amount');
 
@@ -42,45 +43,36 @@ class DashboardController extends Controller
 
         $greetingName = strtok(auth()->user()->name, ' ');
         $hour = (int) now()->format('G');
-        $timeGreeting = $hour < 11 ? 'Selamat pagi' : ($hour < 15 ? 'Selamat siang' : ($hour < 19 ? 'Selamat sore' : 'Selamat malam'));
-
-        $safeQuotes = [
-            'Setiap rupiah yang kamu hemat hari ini adalah investasi untuk masa depanmu.',
-            'Kebebasan finansial dimulai dari keputusan kecil yang konsisten.',
-            'Anggaran yang jelas adalah peta menuju tujuan keuanganmu.',
-            'Disiplin hari ini adalah kemapanan esok hari.',
-            'Mengatur keuangan adalah bentuk cinta untuk masa depanmu.',
-            'Rencanakan dengan bijak agar bulan depannya terasa lebih ringan.',
-        ];
-
-        $cautionQuotes = [
-            'Hati-hati, pengeluaran sudah cukup besar. Evaluasi kebutuhan vs keinginan.',
-            'Pengeluaran mulai mendekati batas. Saatnya bijak berbelanja.',
-            'Pengeluaran bulan ini sudah melewati 25% gaji. Perhatikan sisa anggaranmu.',
-        ];
-
-        $dangerQuotes = [
-            'Pengeluaran sudah lebih dari 50% gaji! Saatnya berhenti dan evaluasi.',
-            'Waspadalah! Pengeluaranmu sudah berlebihan. Prioritaskan kebutuhan pokok.',
-            'Pengeluaran melebihi batas aman. Kurangi belanja yang tidak perlu sekarang juga.',
-            'Sisa gaji semakin tipis. Hentikan pengeluaran yang tidak mendesak.',
-        ];
+        $timeGreeting = $hour < 11 ? __('messages.dashboard.greeting_morning')
+            : ($hour < 15 ? __('messages.dashboard.greeting_afternoon')
+            : ($hour < 19 ? __('messages.dashboard.greeting_evening')
+            : __('messages.dashboard.greeting_night')));
 
         $totalIncomeForRatio = $totalIncome > 0 ? $totalIncome : ($salary?->amount ?? 0);
         $expenseRatio = $totalIncomeForRatio > 0 ? ($totalMonthlyExpenses / $totalIncomeForRatio) * 100 : 0;
 
+        $safeQuotes = __('messages.motivation.safe');
+        $cautionQuotes = __('messages.motivation.caution');
+        $dangerQuotes = __('messages.motivation.danger');
+        if (! is_array($safeQuotes)) $safeQuotes = [$safeQuotes];
+        if (! is_array($cautionQuotes)) $cautionQuotes = [$cautionQuotes];
+        if (! is_array($dangerQuotes)) $dangerQuotes = [$dangerQuotes];
+
         if ($expenseRatio > 50) {
             $motivation = $dangerQuotes[array_rand($dangerQuotes)];
-            $motivationColor = 'text-red-200';
             $motivationBg = 'bg-red-500/20';
+            $greetingBg = 'bg-red-600';
+            $greetingShadow = 'shadow-[0_12px_32px_-10px_rgba(220,38,38,0.6)]';
         } elseif ($expenseRatio > 25) {
             $motivation = $cautionQuotes[array_rand($cautionQuotes)];
-            $motivationColor = 'text-yellow-200';
             $motivationBg = 'bg-yellow-500/20';
+            $greetingBg = 'bg-amber-500';
+            $greetingShadow = 'shadow-[0_12px_32px_-10px_rgba(245,158,11,0.6)]';
         } else {
             $motivation = $safeQuotes[array_rand($safeQuotes)];
-            $motivationColor = 'text-white/85';
             $motivationBg = '';
+            $greetingBg = 'bg-[#1BA37A]';
+            $greetingShadow = 'shadow-[0_12px_32px_-10px_rgba(27,163,122,0.6)]';
         }
 
         return view('dashboard', compact(
@@ -91,14 +83,16 @@ class DashboardController extends Controller
             'totalAllocated',
             'totalSpent',
             'remaining',
+            'sisaAlokasi',
             'totalMonthlyExpenses',
             'recentExpenses',
             'dueRecurring',
             'greetingName',
             'timeGreeting',
             'motivation',
-            'motivationColor',
             'motivationBg',
+            'greetingBg',
+            'greetingShadow',
         ));
     }
 
@@ -112,6 +106,6 @@ class DashboardController extends Controller
             AdditionalIncome::query()->delete();
         }
 
-        return back()->with('success', 'Semua data berhasil direset. Kategori tetap tersimpan.');
+        return back()->with('success', __('messages.dashboard.reset_success'));
     }
 }

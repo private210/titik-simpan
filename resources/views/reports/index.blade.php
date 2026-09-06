@@ -1,14 +1,14 @@
 ﻿@extends('layouts.app')
 
-@section('title', 'Laporan - Budget Tracker')
+@section('title', __('messages.reports.title') . ' - Budget Tracker')
 
 @section('content')
 @include('reports.partials.preview-modal')
 <div class="space-y-4 md:space-y-6">
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
-            <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Laporan Keuangan</h1>
-            <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">Ringkasan pengeluaran dan pendapatan</p>
+            <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.reports.title') }}</h1>
+            <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('messages.reports.subtitle') }}</p>
         </div>
         <div class="flex items-center gap-2">
             <form action="{{ route('reports.index', [], false) }}" method="GET">
@@ -32,97 +32,29 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-4 gap-3 md:gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
-            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">Gaji</p>
+            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">{{ __('messages.reports.salary') }}</p>
             <p class="text-sm md:text-2xl font-bold text-gray-900 dark:text-white truncate mt-1" data-count="{{ $salary?->amount ?? 0 }}">Rp {{ number_format($salary?->amount ?? 0, 0, ',', '.') }}</p>
         </div>
         <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
-            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">Total Pengeluaran</p>
+            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">{{ __('messages.reports.expenses') }}</p>
             <p class="text-sm md:text-2xl font-bold text-red-600 dark:text-red-400 truncate mt-1" data-count="{{ $totalExpenses }}">Rp {{ number_format($totalExpenses, 0, ',', '.') }}</p>
         </div>
         <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
-            <p class="text-[10px] md:text-sm text-blue-600 dark:text-blue-400">Tetap/Berulang</p>
+            <p class="text-[10px] md:text-sm text-blue-600 dark:text-blue-400">{{ __('messages.reports.recurring_expenses') }}</p>
             <p class="text-sm md:text-2xl font-bold text-blue-600 dark:text-blue-400 truncate mt-1" data-count="{{ $totalRecurring }}">Rp {{ number_format($totalRecurring, 0, ',', '.') }}</p>
         </div>
         <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700">
+            <p class="text-[10px] md:text-sm text-orange-600 dark:text-orange-400">{{ __('messages.reports.other_expenses') }}</p>
+            <p class="text-sm md:text-2xl font-bold text-orange-600 dark:text-orange-400 truncate mt-1" data-count="{{ $totalNonRecurring }}">Rp {{ number_format($totalNonRecurring, 0, ',', '.') }}</p>
+        </div>
+        <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-3 md:p-5 border border-gray-200 dark:border-gray-700 md:col-span-4">
+            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">{{ __('messages.reports.remaining') }}</p>
             @php $remaining = ($salary?->amount ?? 0) - $totalExpenses; @endphp
-            <p class="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">Sisa</p>
             <p class="text-sm md:text-2xl font-bold {{ $remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} truncate mt-1" data-count="{{ $remaining }}">
                 Rp {{ number_format($remaining, 0, ',', '.') }}
             </p>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-        <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
-            <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
-                <svg class="w-5 h-5 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                Pengeluaran Tetap / Berulang
-            </h2>
-            @php $recurringExpensesList = $expenses->where('is_recurring', true); @endphp
-            @if($recurringExpensesList->count() > 0)
-                <div class="overflow-x-auto max-h-60 scrollbar-hide">
-                    <table class="w-full mobile-card-table">
-                        <thead>
-                            <tr class="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                                <th class="pb-2 font-medium">Deskripsi</th>
-                                <th class="pb-2 font-medium text-right">Jumlah</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($recurringExpensesList as $e)
-                                <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0">
-                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="Deskripsi">
-                                        <div class="flex items-center gap-2">
-                                            <span>{{ $e->category->icon ?? '' }}</span>
-                                            <span>{{ $e->description }}</span>
-                                        </div>
-                                    </td>
-                                    <td class="py-2 text-xs md:text-sm text-right font-medium text-gray-900 dark:text-white" data-label="Jumlah">Rp {{ number_format($e->amount, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @else
-                <p class="text-gray-400 dark:text-gray-500 text-sm text-center py-6">Tidak ada pengeluaran tetap</p>
-            @endif
-        </div>
-
-        <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
-            <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
-                <svg class="w-5 h-5 text-orange-500 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
-                Pengeluaran Lainnya
-            </h2>
-            @php $otherExpensesList = $expenses->where('is_recurring', false); @endphp
-            @if($otherExpensesList->count() > 0)
-                <div class="overflow-x-auto max-h-60 scrollbar-hide">
-                    <table class="w-full mobile-card-table">
-                        <thead>
-                            <tr class="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                                <th class="pb-2 font-medium">Deskripsi</th>
-                                <th class="pb-2 font-medium text-right">Jumlah</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($otherExpensesList as $e)
-                                <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0">
-                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="Deskripsi">
-                                        <div class="flex items-center gap-2">
-                                            <span>{{ $e->category->icon ?? '' }}</span>
-                                            <span>{{ $e->description }}</span>
-                                        </div>
-                                    </td>
-                                    <td class="py-2 text-xs md:text-sm text-right font-medium text-gray-900 dark:text-white" data-label="Jumlah">Rp {{ number_format($e->amount, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @else
-                <p class="text-gray-400 dark:text-gray-500 text-sm text-center py-6">Tidak ada pengeluaran lainnya</p>
-            @endif
         </div>
     </div>
 
@@ -131,13 +63,13 @@
             <div>
                 <h3 class="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
                     <svg class="w-4 h-4 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/></svg>
-                    Per Kategori
+                    {{ __('messages.reports.by_category') }}
                 </h3>
                 <div class="relative flex items-center justify-center" style="height: 200px; max-height: 240px;">
                     <canvas id="categoryChart"></canvas>
                     @if($categoryBreakdown->count() === 0)
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <p class="text-gray-400 dark:text-gray-500 text-sm text-center">Belum ada data</p>
+                            <p class="text-gray-400 dark:text-gray-500 text-sm text-center">{{ __('messages.reports.no_data') }}</p>
                         </div>
                     @endif
                 </div>
@@ -162,13 +94,13 @@
             <div>
                 <h3 class="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
                     <svg class="w-4 h-4 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    Pengeluaran Harian
+                    {{ __('messages.reports.daily_expenses') }}
                 </h3>
                 <div class="relative" style="height: 200px; max-height: 280px;">
                     <canvas id="dailyChart"></canvas>
                     @if($dailyExpenses->count() === 0)
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <p class="text-gray-400 dark:text-gray-500 text-sm text-center">Belum ada data</p>
+                            <p class="text-gray-400 dark:text-gray-500 text-sm text-center">{{ __('messages.reports.no_data') }}</p>
                         </div>
                     @endif
                 </div>
@@ -179,74 +111,144 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-        <div id="top-expenses" class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
-            <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
-                <svg class="w-5 h-5 text-red-500 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17V9m0 0L9 13m4-4l4 4M20 12a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
-                Pengeluaran Terbesar
-            </h2>
-            @if($topExpenses->count() > 0)
-                <div class="space-y-2 md:space-y-3">
-                    @foreach($topExpenses as $expense)
-                        <div class="flex items-center gap-3 p-2 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-all">
-                            <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0" style="background-color: {{ $expense->category->color }}15;">
-                                {{ $expense->category->icon }}
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-xs md:text-sm font-medium text-gray-900 dark:text-white truncate">{{ $expense->description }}</p>
-                                <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ $expense->spent_at->format('d M Y') }}</p>
-                            </div>
-                            <span class="font-semibold text-red-600 dark:text-red-400 text-xs md:text-sm whitespace-nowrap">Rp {{ number_format($expense->amount, 0, ',', '.') }}</span>
+    <div id="top-expenses" class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+        <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+            <svg class="w-5 h-5 text-red-500 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17V9m0 0L9 13m4-4l4 4M20 12a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
+            {{ __('messages.reports.top_expenses') }}
+        </h2>
+        @if($topExpenses->count() > 0)
+            <div class="space-y-2 md:space-y-3 max-h-[280px] overflow-y-auto scrollbar-hide">
+                @foreach($topExpenses as $expense)
+                    <div class="flex items-center gap-3 p-2 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-all">
+                        <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0" style="background-color: {{ $expense->category->color }}15;">
+                            {{ $expense->category->icon }}
                         </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="text-center py-8">
-                    <svg class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada pengeluaran untuk bulan ini.</p>
-                </div>
-            @endif
-        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs md:text-sm font-medium text-gray-900 dark:text-white truncate">{{ $expense->description }}</p>
+                            <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">{{ $expense->spent_at->format('d M Y') }}</p>
+                        </div>
+                        <span class="font-semibold text-red-600 dark:text-red-400 text-xs md:text-sm whitespace-nowrap">Rp {{ number_format($expense->amount, 0, ',', '.') }}</span>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="text-center py-8">
+                <svg class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('messages.reports.no_expenses_month') }}</p>
+            </div>
+        @endif
+    </div>
 
-        <div id="daily-table" class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+    <div id="daily-table" class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+        <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+            <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            {{ __('messages.reports.daily_summary') }}
+        </h2>
+        @if($dailyExpenses->count() > 0)
+            <div class="overflow-x-auto max-h-[280px] scrollbar-hide">
+                <table class="w-full mobile-card-table">
+                    <thead>
+                        <tr class="text-left text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                            <th class="pb-3 font-medium">{{ __('messages.reports.date') }}</th>
+                            <th class="pb-3 font-medium text-right">{{ __('messages.reports.expenses') }}</th>
+                            <th class="pb-3 font-medium text-right">{{ __('messages.reports.difference') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($dailyExpenses as $idx => $daily)
+                            @php
+                                $prevTotal = $idx > 0 ? $dailyExpenses[$idx - 1]->total : 0;
+                                $diff = $daily->total - $prevTotal;
+                            @endphp
+                            <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0">
+                                <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="{{ __('messages.reports.date') }}">{{ \Carbon\Carbon::parse($daily->date)->format('d M Y') }}</td>
+                                <td class="py-2 text-xs md:text-sm text-right font-medium text-gray-900 dark:text-white" data-label="{{ __('messages.reports.expenses') }}">Rp {{ number_format($daily->total, 0, ',', '.') }}</td>
+                                <td class="py-2 text-xs md:text-sm text-right font-medium {{ $diff > 0 ? 'text-red-500 dark:text-red-400' : ($diff < 0 ? 'text-green-500 dark:text-green-400' : 'text-gray-400 dark:text-gray-500') }}" data-label="{{ __('messages.reports.difference') }}">
+                                    {{ $diff > 0 ? '+' : '' }}{{ number_format($diff, 0, ',', '.') }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="text-center py-8">
+                <svg class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('messages.reports.no_expenses_month') }}</p>
+            </div>
+        @endif
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
             <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
-                <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                Ringkasan Harian
+                <svg class="w-5 h-5 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                {{ __('messages.reports.recurring_expenses') }}
             </h2>
-            @if($dailyExpenses->count() > 0)
-                <div class="overflow-x-auto max-h-60 md:max-h-80 scrollbar-hide">
+            @php $recurringExpensesList = $expenses->where('is_recurring', true); @endphp
+            @if($recurringExpensesList->count() > 0)
+                <div class="overflow-x-auto max-h-[280px] scrollbar-hide">
                     <table class="w-full mobile-card-table">
                         <thead>
-                            <tr class="text-left text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                                <th class="pb-3 font-medium">Tanggal</th>
-                                <th class="pb-3 font-medium text-right">Jumlah</th>
-                                <th class="pb-3 font-medium text-right">Selisih</th>
+                            <tr class="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                                <th class="pb-2 font-medium">{{ __('messages.reports.date') }}</th>
+                                <th class="pb-2 font-medium text-right">{{ __('messages.reports.expenses') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($dailyExpenses as $idx => $daily)
-                                @php
-                                    $prevTotal = $idx > 0 ? $dailyExpenses[$idx - 1]->total : 0;
-                                    $diff = $daily->total - $prevTotal;
-                                @endphp
+                            @foreach($recurringExpensesList as $e)
                                 <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0">
-                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="Tanggal">{{ \Carbon\Carbon::parse($daily->date)->format('d M Y') }}</td>
-                                    <td class="py-2 text-xs md:text-sm text-right font-medium text-gray-900 dark:text-white" data-label="Jumlah">Rp {{ number_format($daily->total, 0, ',', '.') }}</td>
-                                    <td class="py-2 text-xs md:text-sm text-right font-medium {{ $diff > 0 ? 'text-red-500 dark:text-red-400' : ($diff < 0 ? 'text-green-500 dark:text-green-400' : 'text-gray-400 dark:text-gray-500') }}" data-label="Selisih">
-                                        {{ $diff > 0 ? '+' : '' }}{{ number_format($diff, 0, ',', '.') }}
+                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="{{ __('messages.reports.date') }}">
+                                        <div class="flex items-center gap-2">
+                                            <span>{{ $e->category->icon ?? '' }}</span>
+                                            <span>{{ $e->description }}</span>
+                                        </div>
                                     </td>
+                                    <td class="py-2 text-xs md:text-sm text-right font-medium text-gray-900 dark:text-white" data-label="{{ __('messages.reports.expenses') }}">Rp {{ number_format($e->amount, 0, ',', '.') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             @else
-                <div class="text-center py-8">
-                    <svg class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada pengeluaran untuk bulan ini.</p>
-                </div>
+                <p class="text-gray-400 dark:text-gray-500 text-sm text-center py-6">{{ __('messages.reports.no_data') }}</p>
             @endif
-</div>
+        </div>
+
+        <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+            <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+                <svg class="w-5 h-5 text-orange-500 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
+                {{ __('messages.reports.other_expenses') }}
+            </h2>
+            @php $otherExpensesList = $expenses->where('is_recurring', false); @endphp
+            @if($otherExpensesList->count() > 0)
+                <div class="overflow-x-auto max-h-[280px] scrollbar-hide">
+                    <table class="w-full mobile-card-table">
+                        <thead>
+                            <tr class="text-left text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                                <th class="pb-2 font-medium">{{ __('messages.reports.date') }}</th>
+                                <th class="pb-2 font-medium text-right">{{ __('messages.reports.expenses') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($otherExpensesList as $e)
+                                <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0">
+                                    <td class="py-2 text-xs md:text-sm text-gray-700 dark:text-gray-300" data-label="{{ __('messages.reports.date') }}">
+                                        <div class="flex items-center gap-2">
+                                            <span>{{ $e->category->icon ?? '' }}</span>
+                                            <span>{{ $e->description }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-2 text-xs md:text-sm text-right font-medium text-gray-900 dark:text-white" data-label="{{ __('messages.reports.expenses') }}">Rp {{ number_format($e->amount, 0, ',', '.') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p class="text-gray-400 dark:text-gray-500 text-sm text-center py-6">{{ __('messages.reports.no_data') }}</p>
+            @endif
+        </div>
     </div>
 </div>
 
@@ -364,7 +366,7 @@
             }
         }
 
-anime({ targets: '#charts-card', opacity: [0, 1], translateY: [16, 0], duration: 400, delay: 150, easing: 'easeOutCubic' });
+        anime({ targets: '#charts-card', opacity: [0, 1], translateY: [16, 0], duration: 400, delay: 150, easing: 'easeOutCubic' });
         anime({ targets: '#top-expenses', opacity: [0, 1], translateY: [16, 0], duration: 400, delay: 250, easing: 'easeOutCubic' });
         anime({ targets: '#daily-table', opacity: [0, 1], translateY: [16, 0], duration: 400, delay: 350, easing: 'easeOutCubic' });
     });

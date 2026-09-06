@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Pengeluaran Berulang - Budget Tracker')
+@section('title', __('messages.recurring.title') . ' - Budget Tracker')
 
 @section('content')
 <div class="space-y-4 md:space-y-6">
     <div class="flex justify-between items-center">
         <div>
-            <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Pengeluaran Berulang</h1>
-            <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">Kelola tagihan bulanan, mingguan, atau tahunan</p>
+            <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.recurring.title') }}</h1>
+            <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('messages.recurring.subtitle') }}</p>
         </div>
         <a href="{{ route('recurring.create') }}"
             class="bg-[#1BA37A] text-white px-3 md:px-4 py-2 rounded-2xl hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press text-sm font-medium inline-block shadow-sm">
-            + Tambah Baru
+            {{ __('messages.recurring.add_new') }}
         </a>
     </div>
 
@@ -30,7 +30,7 @@
                                     <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate">{{ $recurring->category->icon }} {{ $recurring->category->name }}</p>
                                 </div>
                             </div>
-                            <form action="{{ route('recurring.update', $recurring, false) }}" method="POST" class="shrink-0" title="{{ $recurring->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
+                            <form action="{{ route('recurring.update', $recurring, false) }}" method="POST" class="shrink-0" title="{{ $recurring->is_active ? __('messages.recurring.inactive') : __('messages.recurring.active') }}">
                                 @csrf
                                 @method('PATCH')
                                 <input type="hidden" name="is_active" value="{{ $recurring->is_active ? 0 : 1 }}">
@@ -45,15 +45,15 @@
 
                         <div class="space-y-2 text-xs md:text-sm">
                             <div class="flex justify-between">
-                                <span class="text-gray-500 dark:text-gray-400">Jumlah:</span>
+                                <span class="text-gray-500 dark:text-gray-400">{{ __('messages.recurring.amount') }}:</span>
                                 <span class="font-medium text-gray-900 dark:text-white">Rp {{ number_format($recurring->amount, 0, ',', '.') }}</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-500 dark:text-gray-400">Frekuensi:</span>
-                                <span class="text-gray-700 dark:text-gray-300">{{ ['daily' => 'Harian', 'weekly' => 'Mingguan', 'monthly' => 'Bulanan', 'yearly' => 'Tahunan'][$recurring->frequency] ?? ucfirst($recurring->frequency) }}</span>
+                                <span class="text-gray-500 dark:text-gray-400">{{ __('messages.recurring.frequency') }}:</span>
+                                <span class="text-gray-700 dark:text-gray-300">{{ __('messages.recurring.'.$recurring->frequency) }}</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-500 dark:text-gray-400">Jatuh Tempo:</span>
+                                <span class="text-gray-500 dark:text-gray-400">{{ __('messages.recurring.next_due_date') }}:</span>
                                 <span class="{{ $recurring->isDue() ? 'text-red-600 dark:text-red-400 font-semibold' : 'text-gray-700 dark:text-gray-300' }}">
                                     {{ $recurring->next_due_date->format('d M Y') }}
                                     @if($recurring->isDue())
@@ -68,15 +68,15 @@
                                 <form action="{{ route('recurring.pay', $recurring, false) }}" method="POST" class="flex-1">
                                     @csrf
                                     <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-2xl text-sm hover:bg-green-600 active:bg-green-700 transition-all btn-press shadow-sm">
-                                        Bayar & Perbarui
+                                        {{ __('messages.recurring.paid') }}
                                     </button>
                                 </form>
                             @endif
                             <a href="{{ route('recurring.edit', $recurring) }}" class="flex-1 text-center bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 py-2 rounded-2xl text-sm hover:bg-yellow-200 dark:hover:bg-yellow-900/50 active:bg-yellow-300 dark:active:bg-yellow-700/50 transition-all btn-press">
-                                Edit
+                                {{ __('messages.edit') }}
                             </a>
                             <button type="button" onclick="confirmDeleteRecurring('{{ route('recurring.destroy', $recurring, false) }}', '{{ addslashes($recurring->name) }}')" class="flex-1 bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 py-2 rounded-2xl text-sm hover:bg-red-200 dark:hover:bg-red-800/50 active:bg-red-300 dark:active:bg-red-700/50 transition-all btn-press">
-                                Hapus
+                                {{ __('messages.delete') }}
                             </button>
                         </div>
                     </div>
@@ -85,8 +85,8 @@
         @else
             <div class="text-center py-10">
                 <svg class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada pengeluaran berulang.</p>
-                <a href="{{ route('recurring.create') }}" class="mt-3 inline-block bg-[#1BA37A] text-white px-5 py-2 rounded-2xl text-sm hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press">Tambah Baru</a>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('messages.recurring.no_recurring') }}</p>
+                <a href="{{ route('recurring.create') }}" class="mt-3 inline-block bg-[#1BA37A] text-white px-5 py-2 rounded-2xl text-sm hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press">{{ __('messages.recurring.add_new') }}</a>
             </div>
         @endif
     </div>
@@ -98,9 +98,9 @@
     function confirmDeleteRecurring(url, name) {
         showConfirm({
             type: 'danger',
-            title: 'Hapus Pengeluaran Berulang?',
-            message: 'Yakin ingin menghapus "' + name + '" dari daftar berulang? Tindakan ini tidak dapat dibatalkan.',
-            confirmText: 'Ya, Hapus',
+            title: '{{ __('messages.recurring.delete_confirm_title') }}',
+            message: '{{ __('messages.recurring.delete_confirm_message') }}'.replace(':name', name),
+            confirmText: '{{ __('messages.recurring.delete_confirm_text') }}',
             onConfirm: function() {
                 var form = document.createElement('form');
                 form.method = 'POST';

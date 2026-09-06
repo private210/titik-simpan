@@ -1,34 +1,34 @@
 @extends('layouts.app')
 
-@section('title', 'Pengeluaran - Budget Tracker')
+@section('title', __('messages.expenses.title') . ' - Budget Tracker')
 
 @section('content')
 <div class="space-y-4 md:space-y-6">
     <div class="flex justify-between items-center">
-        <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Pengeluaran</h1>
+        <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.expenses.title') }}</h1>
         <a href="{{ route('expenses.create') }}" class="bg-[#1BA37A] text-white px-3 md:px-4 py-2 rounded-2xl hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press text-sm font-medium shadow-sm">
-            + Tambah
+            {{ __('messages.expenses.add_expense') }}
         </a>
     </div>
 
     <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
         <form id="filter-form" action="{{ route('expenses.index', [], false) }}" method="GET" class="flex flex-col gap-2.5 mb-5 sm:flex-row sm:items-end">
             <div class="flex-1 min-w-0">
-                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 ml-1">Dari Bulan</label>
+                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 ml-1">{{ __('messages.expenses.from_month') }}</label>
                 <input type="month" name="from" value="{{ request('from', now()->format('Y-m')) }}"
                     onchange="animateFilterAndSubmit(this)"
                     class="w-full border border-gray-200 dark:border-gray-600/80 bg-gray-50 dark:bg-gray-700/80 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm px-4 py-2.5 transition-all duration-200 cursor-pointer">
             </div>
             <div class="flex-1 min-w-0">
-                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 ml-1">Sampai Bulan</label>
+                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 ml-1">{{ __('messages.expenses.to_month') }}</label>
                 <input type="month" name="to" value="{{ request('to', now()->format('Y-m')) }}"
                     onchange="animateFilterAndSubmit(this)"
                     class="w-full border border-gray-200 dark:border-gray-600/80 bg-gray-50 dark:bg-gray-700/80 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm px-4 py-2.5 transition-all duration-200 cursor-pointer">
             </div>
             <div class="flex-1 min-w-0">
-                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 ml-1">Kategori</label>
+                <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 ml-1">{{ __('messages.expenses.category') }}</label>
                 <select name="category_id" onchange="animateFilterAndSubmit(this)" class="w-full border border-gray-200 dark:border-gray-600/80 bg-gray-50 dark:bg-gray-700/80 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm px-4 py-2.5 transition-all duration-200 cursor-pointer">
-                    <option value="" class="py-3">Semua Kategori</option>
+                    <option value="" class="py-3">{{ __('messages.expenses.all_categories') }}</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
@@ -38,20 +38,18 @@
             </div>
         </form>
 
-        <div id="summary-box" class="bg-[#1BA37A]/10 dark:bg-[#1BA37A]/25 rounded-2xl p-4 mb-5">
-            <div class="grid grid-cols-3 gap-3">
-                <div>
-                    <p class="text-xs text-[#1BA37A] dark:text-[#6EE7B0]">Total Pengeluaran</p>
-                    <p class="text-lg md:text-xl font-bold text-[#1BA37A] dark:text-[#6EE7B0]" data-count="{{ $totalPeriod }}">Rp {{ number_format($totalPeriod, 0, ',', '.') }}</p>
-                </div>
-                <div>
-                    <p class="text-xs text-blue-600 dark:text-blue-400">Pengeluaran Tetap</p>
-                    <p class="text-lg md:text-xl font-bold text-blue-600 dark:text-blue-400" data-count="{{ $totalRecurring }}">Rp {{ number_format($totalRecurring, 0, ',', '.') }}</p>
-                </div>
-                <div>
-                    <p class="text-xs text-orange-600 dark:text-orange-400">Pengeluaran Lainnya</p>
-                    <p class="text-lg md:text-xl font-bold text-orange-600 dark:text-orange-400" data-count="{{ $totalNonRecurring }}">Rp {{ number_format($totalNonRecurring, 0, ',', '.') }}</p>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+            <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
+                <p class="text-xs text-[#1BA37A] dark:text-[#6EE7B0]">{{ __('messages.expenses.total_expenses') }}</p>
+                <p class="text-lg md:text-xl font-bold text-[#1BA37A] dark:text-[#6EE7B0]" data-count="{{ $totalPeriod }}">Rp {{ number_format($totalPeriod, 0, ',', '.') }}</p>
+            </div>
+            <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
+                <p class="text-xs text-blue-600 dark:text-blue-400">{{ __('messages.expenses.recurring_expenses') }}</p>
+                <p class="text-lg md:text-xl font-bold text-blue-600 dark:text-blue-400" data-count="{{ $totalRecurring }}">Rp {{ number_format($totalRecurring, 0, ',', '.') }}</p>
+            </div>
+            <div class="stat-card fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
+                <p class="text-xs text-orange-600 dark:text-orange-400">{{ __('messages.expenses.other_expenses') }}</p>
+                <p class="text-lg md:text-xl font-bold text-orange-600 dark:text-orange-400" data-count="{{ $totalNonRecurring }}">Rp {{ number_format($totalNonRecurring, 0, ',', '.') }}</p>
             </div>
         </div>
 
@@ -66,7 +64,7 @@
                             <div class="flex items-center gap-2">
                                 <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ $expense->description }}</p>
                                 @if($expense->is_recurring)
-                                    <span class="text-[10px] bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded-full shrink-0">Berulang</span>
+                                    <span class="text-[10px] bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded-full shrink-0">{{ __('messages.expenses.recurring') }}</span>
                                 @endif
                             </div>
                             <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $expense->spent_at->format('d M Y') }}</p>
@@ -83,20 +81,20 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
 
-            <div class="mt-2">
-                {{ $expenses->withQueryString()->links('vendor.pagination.custom') }}
-            </div>
-        @else
-            <div id="empty-state" class="text-center py-10">
-                <svg class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada pengeluaran untuk periode ini.</p>
-            </div>
-        @endif
+                <div class="mt-2">
+                    {{ $expenses->withQueryString()->links('vendor.pagination.custom') }}
+                </div>
+            @else
+                <div id="empty-state" class="text-center py-10">
+                    <svg class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('messages.expenses.no_expenses_period') }}</p>
+                </div>
+            @endif
+        </div>
     </div>
-</div>
 @endsection
 
 @push('scripts')
@@ -117,9 +115,9 @@
     function confirmDeleteExpense(url, name) {
         showConfirm({
             type: 'danger',
-            title: 'Hapus Pengeluaran?',
-            message: 'Yakin ingin menghapus "' + name + '?". Tindakan ini tidak dapat dibatalkan.',
-            confirmText: 'Ya, Hapus',
+            title: '{{ __('messages.expenses.delete_confirm_title') }}',
+            message: '{{ __('messages.expenses.delete_confirm_message') }}'.replace(':name', name),
+            confirmText: '{{ __('messages.expenses.delete_confirm_text') }}',
             onConfirm: function() {
                 const form = document.createElement('form');
                 form.method = 'POST';
@@ -133,12 +131,12 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         anime({
-            targets: '#summary-box',
+            targets: '.stat-card',
             opacity: [0, 1],
             translateY: [12, 0],
             duration: 400,
-            easing: 'easeOutCubic',
-            delay: 100
+            delay: anime.stagger(50, { start: 100 }),
+            easing: 'easeOutCubic'
         });
 
         anime({

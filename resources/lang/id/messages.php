@@ -209,6 +209,7 @@ return [
         'paid_success' => 'Pembayaran tercatat!',
         'delete_confirm_title' => 'Hapus Pengeluaran Berulang?',
         'delete_confirm_message' => 'Yakin ingin menghapus ":name" dari daftar berulang? Tindakan ini tidak dapat dibatalkan.',
+        'delete_confirm_text' => 'Ya, Hapus',
         'no_recurring' => 'Belum ada pengeluaran berulang.',
         'cancel_confirm_title' => 'Batalkan Perubahan?',
         'cancel_confirm_message' => 'Perubahan yang belum disimpan akan hilang.',

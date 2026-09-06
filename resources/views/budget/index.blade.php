@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Budget - Budget Tracker')
+@section('title', __('messages.budget.title') . ' - ' . __('messages.app_name'))
 
 @section('content')
 <div class="space-y-4 md:space-y-6">
-    <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Alokasi Budget</h1>
+    <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.budget.title') }}</h1>
 
     <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
         <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
             <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-            Input Gaji
+            {{ __('messages.budget.input_salary') }}
         </h2>
         <form action="{{ route('budget.salary.store', [], false) }}" method="POST" class="space-y-4">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
                 <div class="min-w-0">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Jumlah Gaji</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.budget.salary_amount') }}</label>
                     <div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-[#1BA37A] focus-within:border-[#1BA37A] transition-all bg-white dark:bg-gray-700">
                         <span class="pl-4 pr-3 py-2.5 md:py-3 text-black dark:text-white text-sm md:text-md font-medium border-r border-gray-300 dark:border-gray-600 shrink-0">Rp</span>
                         <input type="text" name="amount_display" inputmode="numeric"
@@ -29,7 +29,7 @@
                     @enderror
                 </div>
                 <div class="min-w-0">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tanggal Diterima</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.budget.received_date') }}</label>
                     <input type="date" name="received_at" value="{{ $salary?->received_at?->format('Y-m-d') ?? now()->format('Y-m-d') }}" required
                         class="w-full min-w-0 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-3 py-2 transition-all">
                     @error('received_at')
@@ -37,14 +37,14 @@
                     @enderror
                 </div>
                 <div class="min-w-0">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Catatan</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.budget.note') }}</label>
                     <input type="text" name="note" value="{{ $salary?->note ?? old('note') }}"
                         class="w-full min-w-0 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-3 py-2 transition-all"
-                        placeholder="Opsional">
+                        placeholder="{{ __('messages.optional') }}">
                 </div>
             </div>
             <button type="submit" class="w-full md:w-auto bg-[#1BA37A] text-white px-6 py-2.5 rounded-2xl hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press font-medium text-sm md:text-base shadow-sm">
-                Simpan Gaji
+                {{ __('messages.budget.save_salary') }}
             </button>
         </form>
     </div>
@@ -52,13 +52,13 @@
     <div class="fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
         <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
             <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            Pendapatan Tambahan
+            {{ __('messages.budget.additional_income') }}
         </h2>
         <form action="{{ route('budget.additional.store', [], false) }}" method="POST" class="space-y-4">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
                 <div class="min-w-0">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Jumlah</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.budget.income_amount') }}</label>
                     <div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-[#1BA37A] focus-within:border-[#1BA37A] transition-all bg-white dark:bg-gray-700">
                         <span class="pl-4 pr-3 py-2.5 md:py-3 text-black dark:text-white text-sm md:text-md font-medium border-r border-gray-300 dark:border-gray-600 shrink-0">Rp</span>
                         <input type="text" name="amount_display" inputmode="numeric"
@@ -71,7 +71,7 @@
                     @enderror
                 </div>
                 <div class="min-w-0">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Deskripsi</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.budget.income_description') }}</label>
                     <input type="text" name="description" value="{{ old('description') }}" required
                         class="w-full min-w-0 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-3 py-2 transition-all"
                         placeholder="Bonus, Freelance, dll">
@@ -80,7 +80,7 @@
                     @enderror
                 </div>
                 <div class="min-w-0">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tanggal Diterima</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.budget.received_date') }}</label>
                     <input type="date" name="received_at" value="{{ now()->format('Y-m-d') }}" required
                         class="w-full min-w-0 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-3 py-2 transition-all">
                     @error('received_at')
@@ -89,12 +89,12 @@
                 </div>
             </div>
             <button type="submit" class="w-full md:w-auto bg-[#1BA37A] text-white px-6 py-2.5 rounded-2xl hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press font-medium text-sm md:text-base shadow-sm">
-                Simpan Pendapatan Tambahan
+                {{ __('messages.budget.save_additional') }}
             </button>
         </form>
         @if($additionalIncomes->count() > 0)
             <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Total Pendapatan Tambahan: <span class="font-semibold text-[#1BA37A] dark:text-[#6EE7B0]">Rp {{ number_format($totalAdditional, 0, ',', '.') }}</span></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">{{ __('messages.budget.total_additional') }}: <span class="font-semibold text-[#1BA37A] dark:text-[#6EE7B0]">Rp {{ number_format($totalAdditional, 0, ',', '.') }}</span></p>
                 <div class="space-y-2">
                     @foreach($additionalIncomes as $income)
                         <div class="flex items-center justify-between p-2.5 bg-gray-50 dark:bg-gray-700/30 rounded-xl">
@@ -113,13 +113,13 @@
     @if($salary)
         <div class="flex justify-end">
             <button type="button" id="toggle-alloc" onclick="toggleAllocForm()" class="bg-[#1BA37A] text-white px-4 md:px-5 py-2.5 rounded-2xl hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press font-medium text-sm md:text-base shadow-sm">
-                + Alokasikan Dana
+                {{ __('messages.budget.allocate_funds') }}
             </button>
         </div>
         <div id="alloc-form" class="hidden fade-in-card bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 md:p-6 border border-gray-200 dark:border-gray-700">
             <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
                 <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                Bagi Budget ke Kategori
+                {{ __('messages.budget.budget_by_category') }}
             </h2>
             <form action="{{ route('budget.allocate', [], false) }}" method="POST" class="space-y-4">
                 @csrf
@@ -155,17 +155,17 @@
 
                 <div class="bg-gray-50 dark:bg-gray-700/50 rounded-2xl p-4">
                     <div class="flex justify-between items-center">
-                        <span class="text-gray-600 dark:text-gray-400 text-sm">Total Gaji:</span>
+                        <span class="text-gray-600 dark:text-gray-400 text-sm">{{ __('messages.budget.total_salary') }}:</span>
                         <span class="font-semibold text-gray-900 dark:text-white" data-count="{{ $salary->amount }}">Rp {{ number_format($salary->amount, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between items-center mt-2">
-                        <span class="text-gray-600 dark:text-gray-400 text-sm">Sisa Belum Dialokasikan:</span>
+                        <span class="text-gray-600 dark:text-gray-400 text-sm">{{ __('messages.budget.remaining_unallocated') }}:</span>
                         <span id="remaining" class="font-semibold text-green-600 dark:text-green-400" data-count="{{ $salary->amount }}">Rp {{ number_format($salary->amount, 0, ',', '.') }}</span>
                     </div>
                 </div>
 
                 <button type="button" onclick="confirmSaveAllocate()" class="w-full md:w-auto bg-green-600 text-white px-6 py-2.5 rounded-2xl hover:bg-green-700 active:bg-green-800 transition-all btn-press font-medium text-sm md:text-base shadow-sm">
-                    Simpan Alokasi
+                    {{ __('messages.budget.save_allocation') }}
                 </button>
             </form>
         </div>
@@ -185,9 +185,9 @@
     function confirmSaveAllocate() {
         showConfirm({
             type: 'success',
-            title: 'Simpan Alokasi?',
-            message: 'Alokasi budget akan diperbarui sesuai jumlah yang dimasukkan.',
-            confirmText: 'Ya, Simpan',
+            title: '{{ __('messages.budget.confirm_save_allocation') }}',
+            message: '{{ __('messages.budget.confirm_save_allocation_message') }}',
+            confirmText: '{{ __('messages.confirm_save') }}',
             onConfirm: function() {
                 document.querySelector('form[action="{{ route('budget.allocate', [], false) }}"]').submit();
             }
@@ -200,13 +200,13 @@
         if (!form) return;
         if (form.classList.contains('hidden')) {
             form.classList.remove('hidden');
-            btn.textContent = 'Sembunyikan Alokasi';
+            btn.textContent = '{{ __('messages.budget.hide_allocation') }}';
             anime({ targets: '#alloc-form', opacity: [0, 1], translateY: [16, 0], duration: 400, delay: 100, easing: 'easeOutCubic' });
             anime({ targets: '.alloc-item', opacity: [0, 1], translateX: [-8, 0], duration: 300, delay: anime.stagger(60, { start: 200 }), easing: 'easeOutCubic' });
             if (typeof animateNumbers !== 'undefined') animateNumbers();
         } else {
             form.classList.add('hidden');
-            btn.textContent = '+ Alokasikan Dana';
+            btn.textContent = '{{ __('messages.budget.allocate_funds') }}';
         }
     }
 

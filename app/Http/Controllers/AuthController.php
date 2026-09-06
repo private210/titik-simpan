@@ -32,7 +32,7 @@ class AuthController extends Controller
             return redirect()->intended('/');
         }
 
-        return back()->withErrors(['email' => 'Email atau kata sandi salah.'])->onlyInput('email');
+        return back()->withErrors(['email' => __('messages.auth.login_failed')])->onlyInput('email');
     }
 
     public function showRegister()
@@ -59,7 +59,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect('/')->with('success', 'Akun berhasil dibuat, selamat datang!');
+        return redirect('/')->with('success', __('messages.auth.registered'));
     }
 
     public function logout(Request $request)
@@ -75,7 +75,7 @@ class AuthController extends Controller
     {
         if (! config('services.google.client_id')) {
             return redirect(auth()->check() ? '/profile' : '/login')
-                ->with('error', 'Login Google belum dikonfigurasi.');
+                ->with('error', __('messages.auth.google_not_configured'));
         }
 
         $request->session()->put('google_intent', auth()->check() ? 'sync' : 'login');
@@ -90,7 +90,7 @@ class AuthController extends Controller
         } catch (\Throwable $e) {
             Log::warning('google oauth failed: '.$e->getMessage());
 
-            return redirect('/login')->with('error', 'Gagal masuk dengan Google, coba lagi.');
+            return redirect('/login')->with('error', __('messages.auth.google_failed'));
         }
 
         $intent = $request->session()->pull('google_intent', 'login');
@@ -128,7 +128,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect('/')->with('success', 'Berhasil masuk dengan Google!');
+        return redirect('/')->with('success', __('messages.auth.google_logged_in'));
     }
 
     private function syncWithGoogle($google)
@@ -144,7 +144,7 @@ class AuthController extends Controller
                 'avatar' => $google->getAvatar(),
             ]);
 
-            return redirect('/profile')->with('success', 'Data profil berhasil disinkronkan dari Google!');
+            return redirect('/profile')->with('success', __('messages.profile.google_synced'));
         }
 
         return redirect('/profile')->with('error', 'Akun Google tidak cocok dengan profil ini.');

@@ -69,7 +69,7 @@ class ExpenseController extends Controller
         }
 
         return redirect()->route($request->input('from') === 'dashboard' ? 'dashboard' : 'expenses.index')
-            ->with('success', 'Pengeluaran berhasil dicatat!');
+            ->with('success', __('messages.expenses.expense_saved'));
     }
 
     public function destroy(Expense $expense)
@@ -83,7 +83,7 @@ class ExpenseController extends Controller
 
         $expense->delete();
 
-        return back()->with('success', 'Pengeluaran berhasil dihapus!');
+        return back()->with('success', __('messages.expenses.expense_deleted'));
     }
 
     public function edit(Expense $expense)
@@ -125,7 +125,7 @@ class ExpenseController extends Controller
         }
 
         return redirect()->route('expenses.index')
-            ->with('success', 'Pengeluaran berhasil diperbarui!');
+            ->with('success', __('messages.expenses.expense_updated'));
     }
 
     private function validateExpense(Request $request): array

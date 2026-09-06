@@ -53,9 +53,12 @@
         input[type="month"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
         .stat-card { transition: all 0.25s ease; }
         .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px -8px rgba(0,0,0,0.1); }
+        /* Reduced rounding: cards/buttons/inputs -> subtle radius, keep circles */
+        .rounded-xl, .rounded-2xl, .rounded-3xl, .rounded-\[24px\] { border-radius: 0.5rem !important; }
+        .rounded-full { border-radius: 9999px !important; }
         @media (max-width: 767px) {
             .mobile-card-table thead { display: none; }
-            .mobile-card-table tbody tr { display: block; margin-bottom: 12px; border: 1px solid #e5e7eb; border-radius: 12px; padding: 12px; }
+            .mobile-card-table tbody tr { display: block; margin-bottom: 12px; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
             .mobile-card-table tbody td { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border: none !important; }
             .mobile-card-table tbody td::before { content: attr(data-label); font-weight: 600; font-size: 0.75rem; color: #6b7280; }
         }
@@ -87,7 +90,7 @@
 <body class="bg-gray-50 dark:bg-gray-900 min-h-screen pb-20 md:pb-0">
     <div id="mobile-loading" class="hidden md:hidden fixed inset-0 z-[200] bg-white dark:bg-gray-900 flex flex-col items-center justify-center gap-4">
         <img src="/assets/logo-light.webp" alt="Titik Simpan" class="h-16 w-auto object-contain animate-pulse">
-        <p class="text-sm text-gray-400 dark:text-gray-500 font-slogan">Memuat data...</p>
+        <p class="text-sm text-gray-400 dark:text-gray-500 font-slogan">{{ __('messages.loading') }}</p>
         <div class="w-48 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div class="h-full bg-[#1BA37A] rounded-full animate-[loading-shimmer_1.5s_ease-in-out_infinite]" style="width:60%"></div>
         </div>
@@ -95,10 +98,10 @@
     <script>
         (function(){
             var isMobile = window.innerWidth <= 768;
-            if(isMobile && !sessionStorage.getItem('ml')) {
+            var isInternal = sessionStorage.getItem('np') === '1';
+            if(isMobile && !isInternal) {
                 var el = document.getElementById('mobile-loading');
                 if(el) { el.classList.remove('hidden'); }
-                sessionStorage.setItem('ml','1');
                 window.addEventListener('load', function(){
                     setTimeout(function(){
                         if(el) { el.style.opacity='0'; el.style.transition='opacity 0.4s ease'; }
@@ -118,12 +121,14 @@
                 </div>
 
                 <div class="hidden md:flex items-center space-x-1">
-                    @php $navItems = [['route'=>'dashboard','label'=>'Dashboard'],['route'=>'budget.index','param'=>'budget.*','label'=>'Budget'],['route'=>'expenses.index','param'=>'expenses.*','label'=>'Pengeluaran'],['route'=>'recurring.index','param'=>'recurring.*','label'=>'Berulang'],['route'=>'categories.index','param'=>'categories.*','label'=>'Kategori'],['route'=>'reports.index','param'=>'reports.*','label'=>'Laporan']]; @endphp
+                    @auth
+                    @php $navItems = [['route'=>'dashboard','label'=>__('messages.nav.dashboard')],['route'=>'budget.index','param'=>'budget.*','label'=>__('messages.nav.budget')],['route'=>'expenses.index','param'=>'expenses.*','label'=>__('messages.nav.expenses')],['route'=>'recurring.index','param'=>'recurring.*','label'=>__('messages.nav.recurring')],['route'=>'categories.index','param'=>'categories.*','label'=>__('messages.nav.categories')],['route'=>'reports.index','param'=>'reports.*','label'=>__('messages.nav.reports')]]; @endphp
                     @foreach($navItems as $nav)
                         <a href="{{ route($nav['route']) }}" class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs($nav['param'] ?? $nav['route']) ? 'bg-[#1BA37A]/10 dark:bg-[#1BA37A]/25 text-[#1BA37A] dark:text-[#6EE7B0]' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                             {{ $nav['label'] }}
                         </a>
                     @endforeach
+                    @endauth
                 </div>
 
                 <div class="flex-1 flex justify-center md:hidden"></div>
@@ -139,38 +144,46 @@
                                 @if(app()->getLocale() === 'id')<svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>@endif
                             </a>
                             <a href="{{ route('lang.switch', 'en') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-t border-gray-100 dark:border-gray-700 {{ app()->getLocale() === 'en' ? 'font-bold text-[#1BA37A] dark:text-[#6EE7B0]' : '' }}">
-                                🇬🇧 English
+                                🇺🇸 English
                                 @if(app()->getLocale() === 'en')<svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>@endif
                             </a>
                         </div>
                     </div>
                     <div class="relative" id="theme-wrap">
-                        <button onclick="toggleThemeMenu(event)" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-all btn-press shadow-md shadow-black/10 dark:shadow-black/40 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:shadow-lg" title="Pilih tema" aria-label="Pilih tema">
+                        <button onclick="toggleThemeMenu(event)" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-all btn-press shadow-md shadow-black/10 dark:shadow-black/40 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:shadow-lg" title="{{ __('messages.theme.title') }}" aria-label="{{ __('messages.theme.title') }}">
                             <svg id="theme-icon-dark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                             <svg id="theme-icon-light" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                         </button>
                         <div id="theme-menu" class="hidden absolute right-0 mt-2 w-44 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                             <button onclick="selectTheme('light')" data-theme="light" class="theme-opt w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                                Terang
+                                {{ __('messages.theme.light') }}
                                 <svg class="theme-check w-4 h-4 ml-auto hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             </button>
                             <button onclick="selectTheme('dark')" data-theme="dark" class="theme-opt w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-t border-gray-100 dark:border-gray-700">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-                                Gelap
+                                {{ __('messages.theme.dark') }}
                                 <svg class="theme-check w-4 h-4 ml-auto hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             </button>
                             <button onclick="selectTheme('auto')" data-theme="auto" class="theme-opt w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-t border-gray-100 dark:border-gray-700">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                Sistem
+                                {{ __('messages.theme.system') }}
                                 <svg class="theme-check w-4 h-4 ml-auto hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             </button>
                         </div>
                     </div>
+                    @guest
+                        <a href="{{ route('login') }}" class="px-4 py-2 rounded-2xl text-sm font-medium text-[#1BA37A] dark:text-[#6EE7B0] border border-[#1BA37A]/40 dark:border-[#6EE7B0]/40 hover:bg-[#1BA37A]/10 transition-all btn-press">
+                            {{ __('messages.auth.login') }}
+                        </a>
+                        <a href="{{ route('register') }}" class="px-4 py-2 rounded-2xl text-sm font-medium bg-[#1BA37A] text-white hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press shadow-sm">
+                            {{ __('messages.auth.register') }}
+                        </a>
+                    @else
                     <div class="relative ml-1 md:ml-2" id="avatar-wrap">
-                        <button onclick="toggleAvatarMenu(event)" class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-all btn-press" title="Akun" aria-label="Profil">
+                        <button onclick="toggleAvatarMenu(event)" class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-all btn-press" title="{{ __('messages.profile.title') }}" aria-label="{{ __('messages.profile.title') }}">
                             @if(auth()->user()->avatar)
-                                <img src="{{ auth()->user()->avatar }}" alt="Profil" class="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover ring-2 ring-[#1BA37A]/50 dark:ring-[#6EE7B0]/70 shadow-md shadow-[#1BA37A]/30 dark:shadow-black/40">
+                                <img src="{{ auth()->user()->avatar }}" alt="{{ __('messages.profile.avatar') }}" class="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover ring-2 ring-[#1BA37A]/50 dark:ring-[#6EE7B0]/70 shadow-md shadow-[#1BA37A]/30 dark:shadow-black/40">
                             @else
                                 <div class="w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#1BA37A] text-white flex items-center justify-center text-base font-bold ring-2 ring-[#1BA37A]/50 dark:ring-[#6EE7B0]/70 shadow-md shadow-[#1BA37A]/30 dark:shadow-black/40">
                                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
@@ -184,19 +197,19 @@
                             </div>
                             <a href="{{ route('profile.index', [], false) }}" class="flex items-center gap-2.5 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                                Profil
+                                {{ __('messages.nav.profile') }}
                             </a>
                             <form action="{{ route('logout', [], false) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                                    Keluar
+                                    {{ __('messages.nav.logout') }}
                                 </button>
                             </form>
                         </div>
                     </div>
+                    @endguest
                 </div>
-            </div>
         </div>
         <div id="loading-bar"><span class="bar"></span></div>
     </nav>
@@ -227,15 +240,16 @@
                     <img id="footer-logo" src="/assets/icon-light.svg" alt="Titik Simpan" class="w-7 h-7 object-contain select-none">
                     <span class="font-brand font-bold text-gray-900 dark:text-white">Titik Simpan</span>
                 </div>
-                <p class="text-xs text-gray-400 dark:text-gray-500">Kelola pemasukan & pengeluaran lebih bijak, pencatatan sederhana untuk hidup lebih teratur.</p>
+                <p class="text-xs text-gray-400 dark:text-gray-500">{{ __('messages.app_tagline') }}</p>
                 <p class="text-xs font-medium text-gray-500 dark:text-gray-400">© {{ date('Y') }} <span class="font-bold text-[#1BA37A] dark:text-[#6EE7B0]">Titik Simpan</span> - Ard Production</p>
             </div>
         </div>
     </footer>
 
+    @auth
     <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50">
         <div class="flex justify-around items-center h-16 px-2">
-            @php $bottomNav = [['route'=>'dashboard','icon'=>'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6','label'=>'Dashboard'],['route'=>'budget.index','icon'=>'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z','label'=>'Budget'],['route'=>'expenses.index','icon'=>'M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z','label'=>'Pengeluaran'],['route'=>'recurring.index','icon'=>'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15','label'=>'Berulang'],['route'=>'categories.index','icon'=>'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z','label'=>'Kategori'],['route'=>'reports.index','icon'=>'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z','label'=>'Laporan']]; @endphp
+            @php $bottomNav = [['route'=>'dashboard','icon'=>'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6','label'=>__('messages.nav.dashboard')],['route'=>'budget.index','icon'=>'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z','label'=>__('messages.nav.budget')],['route'=>'expenses.index','icon'=>'M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z','label'=>__('messages.nav.expenses')],['route'=>'recurring.index','icon'=>'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15','label'=>__('messages.nav.recurring')],['route'=>'categories.index','icon'=>'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z','label'=>__('messages.nav.categories')],['route'=>'reports.index','icon'=>'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z','label'=>__('messages.nav.reports')]]; @endphp
             @foreach($bottomNav as $item)
                 <a href="{{ route($item['route']) }}" class="bottom-nav-item flex flex-col items-center justify-center px-2 py-1 rounded-xl transition-all {{ request()->routeIs(str_replace('.', '*', $item['route'])) ? 'active text-[#1BA37A] dark:text-[#6EE7B0]' : 'text-gray-400 dark:text-gray-500' }}">
                     <svg class="w-6 h-6 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $item['icon'] }}"/></svg>
@@ -244,6 +258,7 @@
             @endforeach
         </div>
     </nav>
+@endauth
 
     <div id="confirmModal" class="hidden fixed inset-0 bg-black/60 modal-backdrop flex items-center justify-center z-[100] p-4">
         <div id="confirmModalBox" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
@@ -257,10 +272,10 @@
             </div>
             <div class="px-6 pb-6 pt-4 flex space-x-3">
                 <button id="confirmModalCancel" class="flex-1 px-4 py-3 rounded-xl text-sm font-semibold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 transition-all btn-press">
-                    Batal
+                    {{ __('messages.cancel') }}
                 </button>
                 <button id="confirmModalOk" class="flex-1 px-4 py-3 rounded-xl text-sm font-semibold text-white transition-all btn-press">
-                    Ya
+                    {{ __('messages.yes') }}
                 </button>
             </div>
         </div>

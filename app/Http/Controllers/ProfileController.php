@@ -39,12 +39,12 @@ class ProfileController extends Controller
             if ($user->google_id || Hash::check($validated['current_password'], $user->password)) {
                 $user->password = Hash::make($validated['password']);
             } else {
-                return back()->withErrors(['current_password' => 'Kata sandi saat ini salah.']);
+                return back()->withErrors(['current_password' => __('messages.profile.password_mismatch')]);
             }
         }
 
         $user->save();
 
-        return back()->with('success', 'Profil berhasil diperbarui!');
+        return back()->with('success', __('messages.profile.profile_updated'));
     }
 }
