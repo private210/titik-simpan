@@ -8,7 +8,9 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecurringExpenseController;
 use App\Http\Controllers\ReportController;
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 foreach (['logo.svg', 'darkmode-logo.svg', 'icon-light.svg', 'icon-dark.svg', 'icon-monokrom.svg', 'logo-light.png', 'logo-dark.png', 'logo-light.webp', 'logo-dark.webp'] as $asset) {
@@ -43,8 +45,25 @@ Route::get('/lang/{locale}', function (string $locale) {
 })->name('lang.switch');
 
 Route::get('/demo', function () {
-    return view('demo');
+    $user = User::where('email', \Database\Seeders\DemoAccountSeeder::DEMO_EMAIL)->first();
+
+    if (! $user) {
+        Artisan::call('db:seed', ['--class' => \Database\Seeders\DemoAccountSeeder::class, '--force' => true]);
+        $user = User::where('email', \Database\Seeders\DemoAccountSeeder::DEMO_EMAIL)->first();
+    }
+
+    Auth::loginUsingId($user->id);
+    session()->regenerate();
+
+    return redirect('/');
 })->name('demo.index');
+
+Route::get('/', function () {
+    if (auth()->check()) {
+        return app(DashboardController::class)->index(request());
+    }
+    return view('landing');
+})->name('dashboard');
 
 Route::get('/seed-demo', function () {
     $token = env('DEMO_SEED_TOKEN');
@@ -58,8 +77,7 @@ Route::get('/seed-demo', function () {
     return response(Artisan::output())->header('Content-Type', 'text/plain');
 })->name('demo.seed');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', 'blockDemo'])->group(function () {
     Route::post('/reset-data', [DashboardController::class, 'resetData'])->name('reset-data');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

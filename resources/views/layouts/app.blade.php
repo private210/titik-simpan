@@ -224,7 +224,7 @@
                     <span class="font-brand font-bold text-gray-900 dark:text-white">Titik Simpan</span>
                 </div>
                 <p class="text-xs text-gray-400 dark:text-gray-500">{{ __('messages.app_tagline') }}</p>
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">© {{ date('Y') }} <span class="font-bold text-[#1BA37A] dark:text-[#6EE7B0]">Titik Simpan</span> - Ard Production</p>
+                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">© {{ date('Y') }} <span class="font-bold text-[#1BA37A] dark:text-[#6EE7B0]">Titik Simpan</span> - <a href="https://github.com/private210" target="_blank" rel="noopener nofollow" class="hover:underline">Ard Production</a></p>
             </div>
         </div>
     </footer>

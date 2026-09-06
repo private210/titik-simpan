@@ -175,7 +175,7 @@
     @endif
 
     <div class="page-footer">
-        <div>© {{ now()->year }} <span class="green">Titik Simpan</span> - Ard Production &nbsp;•&nbsp; Halaman <span class="pg page-number"></span></div>
+        <div>© {{ now()->year }} <span class="green">Titik Simpan</span> - <a href="https://github.com/private210" target="_blank" class="green">Ard Production</a> &nbsp;•&nbsp; Halaman <span class="pg page-number"></span></div>
     </div>
 </body>
 </html>

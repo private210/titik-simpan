@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureNotDemo;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
@@ -15,7 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(SecurityHeaders::class);
         $middleware->web(append: [SetLocale::class]);
-        $middleware->redirectGuestsTo(fn () => url('/demo'));
+        $middleware->alias(['blockDemo' => EnsureNotDemo::class]);
+        $middleware->redirectGuestsTo(fn () => url('/'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
