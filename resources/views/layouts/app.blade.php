@@ -164,6 +164,14 @@
                         </a>
                     @else
                     <div class="relative ml-1 md:ml-2" id="avatar-wrap">
+                        @if(auth()->user()->email === \Database\Seeders\DemoAccountSeeder::DEMO_EMAIL)
+                            <form action="{{ route('logout', [], false) }}" method="POST" class="shrink-0">
+                                @csrf
+                                <button type="submit" class="px-4 py-2 rounded-2xl text-sm font-medium text-[#1BA37A] dark:text-[#6EE7B0] border border-[#1BA37A]/40 dark:border-[#6EE7B0]/40 hover:bg-[#1BA37A]/10 transition-all btn-press">
+                                    {{ __('messages.auth.login') }}
+                                </button>
+                            </form>
+                        @else
                         <button onclick="toggleAvatarMenu(event)" class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-all btn-press" title="{{ __('messages.profile.title') }}" aria-label="{{ __('messages.profile.title') }}">
                             @if(auth()->user()->avatar)
                                 <img src="{{ auth()->user()->avatar }}" alt="{{ __('messages.profile.avatar') }}" class="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover ring-2 ring-[#1BA37A]/50 dark:ring-[#6EE7B0]/70 shadow-md shadow-[#1BA37A]/30 dark:shadow-black/40">
@@ -191,6 +199,7 @@
                             </form>
                         </div>
                     </div>
+                    @endif
                     @endguest
                 </div>
         </div>
