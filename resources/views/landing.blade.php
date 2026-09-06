@@ -15,7 +15,7 @@
     <div id="aurora-container" class="absolute inset-0 pointer-events-none opacity-70" style="z-index:0"></div>
     <div class="relative mx-auto text-center py-14 md:py-24 px-4">
         <div id="hero-logo-wrap" class="inline-block" style="transform-style:preserve-3d; transition: transform .18s ease-out; will-change:transform">
-            <img id="hero-logo" src="/assets/logo-light.png" alt="Titik Simpan" class="h-20 md:h-28 mx-auto mb-6 drop-shadow-[0_8px_20px_rgba(27,163,122,0.4)]">
+            <img id="hero-logo" src="/assets/logo-light.png" alt="Titik Simpan" class="h-28 md:h-40 mx-auto mb-8 drop-shadow-[0_8px_20px_rgba(27,163,122,0.4)]">
         </div>
         <h1 class="text-3xl md:text-5xl font-brand text-gray-900 dark:text-white leading-tight">
             Catat <span class="text-[#1BA37A]">Sekarang</span>,<br>
@@ -125,8 +125,8 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-                <div class="acc-item border-b border-gray-200 dark:border-gray-700">
-                    <button type="button" onclick="toggleFaq(this)" class="acc-btn w-full text-left py-4 font-medium text-gray-900 dark:text-white text-sm md:text-base px-1">
+                <div class="acc-item bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+                    <button type="button" onclick="toggleFaq(this)" class="acc-btn w-full text-left px-5 py-4 font-medium text-gray-900 dark:text-white text-sm md:text-base">
                         {{ $faq['q'] }}
                     </button>
                     <div class="acc-panel px-5 pb-4 text-sm text-gray-500 dark:text-gray-400">
