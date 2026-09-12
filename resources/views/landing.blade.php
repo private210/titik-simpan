@@ -9,12 +9,8 @@
     .acc-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
     .acc-open .acc-panel { max-height: 220px; }
     main { max-width: none !important; }
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .55s ease, transform .55s ease; }
-    .reveal.show { opacity: 1; transform: translateY(0) translateX(0); }
-    .reveal.step-left { transform: translateY(16px) translateX(-50px); }
-    .reveal.step-right { transform: translateY(16px) translateX(50px); }
-    .workflow-bar { width: 0; transition: width 1.4s cubic-bezier(.25,.72,.35,1); background: linear-gradient(90deg, #1BA37A, #6EE7B0); box-shadow: 0 0 10px rgba(27,163,122,.55); }
-    #workflow-line.active .workflow-bar { width: 100%; }
+    .reveal { opacity: 0; transition: opacity .55s ease; }
+    .reveal.show { opacity: 1; }
 </style>
 
 <section id="hero" class="relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
@@ -93,12 +89,8 @@
     <div class="mx-auto px-4">
         <h2 class="text-xl md:text-2xl font-brand text-center text-gray-900 dark:text-white mb-8 reveal">Cara Kerja</h2>
         <div class="relative max-w-3xl mx-auto">
-            <div id="workflow-line" class="hidden md:block absolute top-5 left-[8%] right-[8%] h-[3px] rounded-full overflow-hidden">
-                <div class="w-full h-full rounded-full" style="background: rgba(27,163,122,0.18);"></div>
-                <div class="workflow-bar absolute inset-y-0 left-0 rounded-full"></div>
-            </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
-                <div class="text-center reveal step-left">
+                <div class="text-center reveal">
                     <div class="relative z-10 w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-3 text-sm shadow-md shadow-[#1BA37A]/30">1</div>
                     <h3 class="font-semibold text-gray-900 dark:text-white">Input Gaji</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Catat gaji atau pendapatan tambahan bulan ini.</p>
@@ -108,7 +100,7 @@
                     <h3 class="font-semibold text-gray-900 dark:text-white">Alokasikan Dana</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Bagi budget ke setiap kategori kebutuhanmu.</p>
                 </div>
-                <div class="text-center reveal step-right" style="transition-delay: 240ms;">
+                <div class="text-center reveal" style="transition-delay: 240ms;">
                     <div class="relative z-10 w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-3 text-sm shadow-md shadow-[#1BA37A]/30">3</div>
                     <h3 class="font-semibold text-gray-900 dark:text-white">Catat & Pantau</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Catat pengeluaran harian dan pantau lewat laporan.</p>
@@ -270,12 +262,5 @@ if (logoWrap) {
         });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal:not(.show)').forEach(function(el) { observer.observe(el); });
-
-    var line = document.getElementById('workflow-line');
-    if (line) {
-        new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) { if (e.isIntersecting) line.classList.add('active'); });
-        }, { threshold: 0.3 }).observe(line);
-    }
 </script>
 @endpush
