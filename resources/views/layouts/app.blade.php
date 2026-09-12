@@ -120,7 +120,7 @@
             <div class="flex justify-between items-center h-14 md:h-16">
                 <div class="flex items-center shrink-0">
                     <a href="{{ route('dashboard') }}" class="flex items-center">
-                        <img id="navbar-logo" src="/assets/logo-light.webp" alt="Titik Simpan" class="h-9 md:h-10 w-auto object-contain select-none drop-shadow-[0_4px_8px_rgba(27,163,122,0.35)] dark:drop-shadow-[0_4px_10px_rgba(110,231,176,0.3)]">
+                        <img id="navbar-logo" src="/assets/logo-light.webp" alt="Titik Simpan" class="h-9 md:h-24 w-auto object-contain select-none drop-shadow-[0_4px_8px_rgba(27,163,122,0.35)] dark:drop-shadow-[0_4px_10px_rgba(110,231,176,0.3)] dark:md:h-24">
                     </a>
                 </div>
 
@@ -233,7 +233,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div class="flex items-center gap-2.5">
-                    <img id="footer-logo" src="/assets/icon-light.svg" alt="Titik Simpan" class="w-7 h-7 object-contain select-none">
+                    <img id="footer-logo" src="/assets/icon-light.svg" alt="Titik Simpan" class="h-8 md:h-14 w-auto object-contain select-none">
                     <span class="font-brand font-bold text-gray-900 dark:text-white">Titik Simpan</span>
                 </div>
                 <p class="text-xs text-gray-400 dark:text-gray-500">{{ __('messages.app_tagline') }}</p>

@@ -13,16 +13,15 @@
 
 <section id="hero" class="relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
     <div id="aurora-container" class="absolute inset-0 pointer-events-none opacity-70" style="z-index:0"></div>
-    <div class="relative mx-auto text-center py-14 md:py-24 px-4">
+    <div class="relative mx-auto text-center py-10 md:py-16 px-4">
         <div id="hero-logo-wrap" class="inline-block" style="transform-style:preserve-3d; transition: transform .18s ease-out; will-change:transform">
-            <img id="hero-logo" src="/assets/logo-light.png" alt="Titik Simpan" class="h-28 md:h-40 mx-auto mb-8 drop-shadow-[0_8px_20px_rgba(27,163,122,0.4)]">
+            <img id="hero-logo" src="/assets/logo-light.png" alt="Titik Simpan" class="h-24 md:h-32 mx-auto mb-6 drop-shadow-[0_8px_20px_rgba(27,163,122,0.4)]">
         </div>
-        <h1 class="text-[26px] md:text-[44px] font-brand text-gray-900 dark:text-white leading-tight">
-            Catat <span class="text-[#1BA37A]">Sekarang</span>,<br>
-            Hemat <span class="text-[#1BA37A]">Hari Ini</span>,<br>
+        <h2 class="text-xl md:text-3xl font-brand text-gray-900 dark:text-white leading-tight">
+            Catat <span class="text-[#1BA37A]">Sekarang</span>, Hemat <span class="text-[#1BA37A]">Hari Ini</span>,<br>
             Untuk <span class="text-[#1BA37A]">Masa Depan</span> Yang Lebih Baik
-        </h1>
-        <p class="mt-5 text-[14px] md:text-[16px] text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
+        </h2>
+        <p class="mt-4 text-[14px] md:text-[16px] text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
             Aplikasi budget tracker sederhana untuk mencatat pemasukan, mengalokasikan anggaran,
             dan mengontrol pengeluaran bulanan Anda.
         </p>
@@ -33,9 +32,6 @@
             </a>
             <a href="{{ route('register') }}" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 px-7 py-3 rounded-2xl font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all btn-press">
                 Daftar Gratis
-            </a>
-            <a href="{{ route('login') }}" class="text-[#1BA37A] dark:text-[#6EE7B0] px-5 py-3 font-semibold hover:underline transition-all">
-                Masuk
             </a>
         </div>
 
@@ -63,7 +59,7 @@
 <section class="py-10 md:py-14">
     <div class="max-w-6xl mx-auto px-4">
         <h2 class="text-xl md:text-2xl font-brand text-center text-gray-900 dark:text-white mb-8">Fitur Unggulan</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
             @php
             $features = [
                 ['icon' => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', 'title' => 'Dashboard Bento', 'desc' => 'Ringkasan keuangan dalam satu layar: saldo, alokasi, dan pengeluaran terbaru.'],
@@ -75,12 +71,12 @@
             ];
             @endphp
             @foreach($features as $f)
-                <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                    <div class="w-9 h-9 rounded-lg bg-[#BDE0D2] dark:bg-[#1BA37A]/25 flex items-center justify-center mb-2">
-                        <svg class="w-4 h-4 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $f['icon'] }}"/></svg>
+                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm hover:shadow-md hover:border-[#1BA37A]/30 dark:hover:border-[#1BA37A]/40 transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-[#1BA37A]/10 dark:bg-[#1BA37A]/20 flex items-center justify-center mb-3">
+                        <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $f['icon'] }}"/></svg>
                     </div>
-                    <h3 class="font-semibold text-gray-900 dark:text-white">{{ $f['title'] }}</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ $f['desc'] }}</p>
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-1.5">{{ $f['title'] }}</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{{ $f['desc'] }}</p>
                 </div>
             @endforeach
         </div>
@@ -90,21 +86,30 @@
 <section class="py-10 md:py-14">
     <div class="mx-auto px-4">
         <h2 class="text-xl md:text-2xl font-brand text-center text-gray-900 dark:text-white mb-8">Cara Kerja</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div class="text-center">
-                <div class="w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-2 text-sm">1</div>
-                <h3 class="font-semibold text-gray-900 dark:text-white">Input Gaji</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Catat gaji atau pendapatan tambahan bulan ini.</p>
-            </div>
-            <div class="text-center">
-                <div class="w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-2 text-sm">2</div>
-                <h3 class="font-semibold text-gray-900 dark:text-white">Alokasikan Dana</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Bagi budget ke setiap kategori kebutuhanmu.</p>
-            </div>
-            <div class="text-center">
-                <div class="w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-2 text-sm">3</div>
-                <h3 class="font-semibold text-gray-900 dark:text-white">Catat & Pantau</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Catat pengeluaran harian dan pantau lewat laporan.</p>
+        <div class="relative max-w-3xl mx-auto">
+            <div class="hidden md:block absolute top-5 left-[17%] right-[17%] h-0.5 -z-10" style="background: linear-gradient(90deg, transparent, #1BA37A 10%, #1BA37A 90%, transparent); opacity: 0.35;"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
+                <div class="text-center">
+                    <div class="w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-3 text-sm shadow-md shadow-[#1BA37A]/30">1</div>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">Input Gaji</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Catat gaji atau pendapatan tambahan bulan ini.</p>
+                </div>
+                <div class="text-center relative">
+                    <div class="hidden md:flex absolute -left-3 top-4 text-[#1BA37A]/60">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-3 text-sm shadow-md shadow-[#1BA37A]/30">2</div>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">Alokasikan Dana</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Bagi budget ke setiap kategori kebutuhanmu.</p>
+                </div>
+                <div class="text-center relative">
+                    <div class="hidden md:flex absolute -left-3 top-4 text-[#1BA37A]/60">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-3 text-sm shadow-md shadow-[#1BA37A]/30">3</div>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">Catat & Pantau</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Catat pengeluaran harian dan pantau lewat laporan.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -113,8 +118,8 @@
 <section id="faq" class="py-10 md:py-14">
     <div class="mx-auto px-4 max-w-5xl">
         <h2 class="text-xl md:text-2xl font-brand text-center text-gray-900 dark:text-white mb-8">FAQ & Kontak</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="space-y-3">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <div class="lg:col-span-3 space-y-3">
                 @php
                 $faqs = [
                     ['q' => 'Apakah Titik Simpan gratis?', 'a' => 'Ya, aplikasi ini 100% gratis digunakan. Kamu hanya perlu membuat akun untuk mulai mengelola keuanganmu.'],
@@ -137,7 +142,7 @@
                 @endforeach
             </div>
 
-            <div>
+            <div class="lg:col-span-2">
                 <h3 class="font-brand text-lg text-gray-900 dark:text-white mb-1.5">Hubungi Kami</h3>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">
                     Punya pertanyaan atau saran? Kirim pesan ke
@@ -227,7 +232,7 @@ void main(){vec2 uv=gl_FragCoord.xy/uResolution.xy;float t=uSpeed*0.4*uTime;vec2
         prog.uniforms.uTime.value = t * 0.001;
         cur[0]+=.05*(tgt[0]-cur[0]); cur[1]+=.05*(tgt[1]-cur[1]);
         prog.uniforms.uMouse.value[0]=cur[0]; prog.uniforms.uMouse.value[1]=cur[1];
-        prog.uniforms.uLightMode.value = document.documentElement.classList.contains('dark') ? 0 : 1;
+        prog.uniforms.uLightMode.value = 0;
         r.render({scene:mesh});
     }
     requestAnimationFrame(loop);
