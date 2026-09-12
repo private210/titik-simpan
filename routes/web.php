@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecurringExpenseController;
 use App\Http\Controllers\ReportController;
 use App\Models\User;
+use Database\Seeders\DemoAccountSeeder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -45,15 +46,15 @@ Route::get('/lang/{locale}', function (string $locale) {
 })->name('lang.switch');
 
 Route::get('/demo', function () {
-    $user = User::where('email', \Database\Seeders\DemoAccountSeeder::DEMO_EMAIL)->first();
+    $user = User::where('email', DemoAccountSeeder::DEMO_EMAIL)->first();
 
     if (! $user) {
         try {
-            Artisan::call('db:seed', ['--class' => \Database\Seeders\DemoAccountSeeder::class, '--force' => true]);
-        } catch (\Throwable $e) {
+            Artisan::call('db:seed', ['--class' => DemoAccountSeeder::class, '--force' => true]);
+        } catch (Throwable $e) {
             report($e);
         }
-        $user = User::where('email', \Database\Seeders\DemoAccountSeeder::DEMO_EMAIL)->first();
+        $user = User::where('email', DemoAccountSeeder::DEMO_EMAIL)->first();
     }
 
     if (! $user) {

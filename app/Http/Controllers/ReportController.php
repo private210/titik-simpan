@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdditionalIncome;
 use App\Models\Expense;
 use App\Models\Salary;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use PhpOffice\PhpSpreadsheet\Chart\Chart;
 use PhpOffice\PhpSpreadsheet\Chart\DataSeries;
 use PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues;
@@ -94,9 +96,9 @@ class ReportController extends Controller
             'days' => $days,
         ];
 
-        $hasAdditional = \Illuminate\Support\Facades\Schema::hasTable('additional_incomes');
+        $hasAdditional = Schema::hasTable('additional_incomes');
         $totalAdditionalIncome = $hasAdditional
-            ? \App\Models\AdditionalIncome::whereBetween('received_at', [$startDate, $endDate])->sum('amount')
+            ? AdditionalIncome::whereBetween('received_at', [$startDate, $endDate])->sum('amount')
             : 0;
 
         $salary = Salary::where('received_at', '>=', $startDate)

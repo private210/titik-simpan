@@ -54,9 +54,15 @@ class DashboardController extends Controller
         $safeQuotes = __('messages.motivation.safe');
         $cautionQuotes = __('messages.motivation.caution');
         $dangerQuotes = __('messages.motivation.danger');
-        if (! is_array($safeQuotes)) $safeQuotes = [$safeQuotes];
-        if (! is_array($cautionQuotes)) $cautionQuotes = [$cautionQuotes];
-        if (! is_array($dangerQuotes)) $dangerQuotes = [$dangerQuotes];
+        if (! is_array($safeQuotes)) {
+            $safeQuotes = [$safeQuotes];
+        }
+        if (! is_array($cautionQuotes)) {
+            $cautionQuotes = [$cautionQuotes];
+        }
+        if (! is_array($dangerQuotes)) {
+            $dangerQuotes = [$dangerQuotes];
+        }
 
         if ($expenseRatio > 50) {
             $motivation = $dangerQuotes[array_rand($dangerQuotes)];
