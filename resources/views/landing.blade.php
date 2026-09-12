@@ -9,11 +9,13 @@
     .acc-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
     .acc-open .acc-panel { max-height: 220px; }
     main { max-width: none !important; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
 </style>
 
 <section id="hero" class="relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
     <div id="aurora-container" class="absolute inset-0 pointer-events-none opacity-70" style="z-index:0"></div>
-    <div class="relative mx-auto text-center py-10 md:py-16 px-4">
+    <div class="relative mx-auto text-center py-10 md:py-16 px-4 reveal show">
         <div id="hero-logo-wrap" class="inline-block" style="transform-style:preserve-3d; transition: transform .18s ease-out; will-change:transform">
             <img id="hero-logo" src="/assets/logo-light.png" alt="Titik Simpan" class="h-24 md:h-32 mx-auto mb-6 drop-shadow-[0_8px_20px_rgba(27,163,122,0.4)]">
         </div>
@@ -58,7 +60,7 @@
 
 <section class="py-10 md:py-14">
     <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-xl md:text-2xl font-brand text-center text-gray-900 dark:text-white mb-8">Fitur Unggulan</h2>
+        <h2 class="text-xl md:text-2xl font-brand text-center text-gray-900 dark:text-white mb-8 reveal">Fitur Unggulan</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
             @php
             $features = [
@@ -71,7 +73,7 @@
             ];
             @endphp
             @foreach($features as $f)
-                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm hover:shadow-md hover:border-[#1BA37A]/30 dark:hover:border-[#1BA37A]/40 transition-all">
+                <div class="reveal bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm hover:shadow-md hover:border-[#1BA37A]/30 dark:hover:border-[#1BA37A]/40 transition-all">
                     <div class="w-10 h-10 rounded-lg bg-[#1BA37A]/10 dark:bg-[#1BA37A]/20 flex items-center justify-center mb-3">
                         <svg class="w-5 h-5 text-[#1BA37A] dark:text-[#6EE7B0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $f['icon'] }}"/></svg>
                     </div>
@@ -85,17 +87,17 @@
 
 <section class="py-10 md:py-14">
     <div class="mx-auto px-4">
-        <h2 class="text-xl md:text-2xl font-brand text-center text-gray-900 dark:text-white mb-8">Cara Kerja</h2>
+        <h2 class="text-xl md:text-2xl font-brand text-center text-gray-900 dark:text-white mb-8 reveal">Cara Kerja</h2>
         <div class="relative max-w-3xl mx-auto">
-            <div class="hidden md:block absolute top-5 left-[17%] right-[17%] h-0.5 -z-10" style="background: linear-gradient(90deg, transparent, #1BA37A 10%, #1BA37A 90%, transparent); opacity: 0.35;"></div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
+            <div class="hidden md:block absolute top-5 left-[17%] right-[17%] h-1.5 rounded-full" style="background: linear-gradient(90deg, transparent, #1BA37A 8%, #1BA37A 92%, transparent);"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 reveal">
                 <div class="text-center">
                     <div class="w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-3 text-sm shadow-md shadow-[#1BA37A]/30">1</div>
                     <h3 class="font-semibold text-gray-900 dark:text-white">Input Gaji</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Catat gaji atau pendapatan tambahan bulan ini.</p>
                 </div>
                 <div class="text-center relative">
-                    <div class="hidden md:flex absolute -left-3 top-4 text-[#1BA37A]/60">
+                    <div class="hidden md:flex absolute -left-3 top-3 text-[#1BA37A]">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </div>
                     <div class="w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-3 text-sm shadow-md shadow-[#1BA37A]/30">2</div>
@@ -103,7 +105,7 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Bagi budget ke setiap kategori kebutuhanmu.</p>
                 </div>
                 <div class="text-center relative">
-                    <div class="hidden md:flex absolute -left-3 top-4 text-[#1BA37A]/60">
+                    <div class="hidden md:flex absolute -left-3 top-3 text-[#1BA37A]">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </div>
                     <div class="w-10 h-10 rounded-full bg-[#1BA37A] text-white font-bold flex items-center justify-center mx-auto mb-3 text-sm shadow-md shadow-[#1BA37A]/30">3</div>
@@ -117,7 +119,7 @@
 
 <section id="faq" class="py-10 md:py-14">
     <div class="mx-auto px-4 max-w-5xl">
-        <h2 class="text-xl md:text-2xl font-brand text-center text-gray-900 dark:text-white mb-8">FAQ & Kontak</h2>
+        <h2 class="text-xl md:text-2xl font-brand text-center text-gray-900 dark:text-white mb-8 reveal">FAQ & Kontak</h2>
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
             <div class="lg:col-span-3 space-y-3">
                 @php
@@ -131,11 +133,11 @@
                 ];
                 @endphp
                 @foreach($faqs as $faq)
-                    <div class="acc-item bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+                    <div class="reveal acc-item bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
                         <button type="button" onclick="toggleFaq(this)" class="acc-btn w-full text-left px-4 py-3 font-medium text-gray-900 dark:text-white text-sm">
                             {{ $faq['q'] }}
                         </button>
-                        <div class="acc-panel px-4 pb-3 text-sm text-gray-500 dark:text-gray-400">
+                        <div class="acc-panel px-4 text-sm text-gray-500 dark:text-gray-400">
                             {{ $faq['a'] }}
                         </div>
                     </div>
@@ -143,11 +145,12 @@
             </div>
 
             <div class="lg:col-span-2">
-                <h3 class="font-brand text-lg text-gray-900 dark:text-white mb-1.5">Hubungi Kami</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">
+                <div class="reveal bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 md:p-6 shadow-sm bg-gradient-to-br from-[#1BA37A]/5 via-white dark:via-gray-800 dark:from-[#1BA37A]/10 to-transparent h-full">
+                <h3 class="font-brand text-lg text-gray-900 dark:text-white mb-4">Hubungi Kami</h3>
+                {{-- <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">
                     Punya pertanyaan atau saran? Kirim pesan ke
                     <a href="mailto:pname210@gmail.com" class="text-[#1BA37A] dark:text-[#6EE7B0] font-medium hover:underline">pname210@gmail.com</a>
-                </p>
+                </p> --}}
 
                 <form id="contact-form" class="space-y-3.5">
                     <div>
@@ -171,6 +174,7 @@
                     </button>
                     <p class="text-center text-xs text-gray-400 dark:text-gray-500">Formulir ini belum aktif dan belum mengirim email apa pun.</p>
                 </form>
+                </div>
             </div>
         </div>
     </div>
@@ -257,5 +261,13 @@ if (logoWrap) {
         document.querySelectorAll('.acc-item').forEach(function(el) { el.classList.remove('acc-open'); });
         if (!wasOpen) item.classList.add('acc-open');
     }
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+            if (e.isIntersecting) e.target.classList.add('show');
+            else e.target.classList.remove('show');
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal:not(.show)').forEach(function(el) { observer.observe(el); });
 </script>
 @endpush
