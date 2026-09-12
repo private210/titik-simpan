@@ -6,6 +6,10 @@
     <meta name="theme-color" content="#1BA37A" id="browser-theme-color">
     <link rel="icon" href="/assets/icon-dark.svg" type="image/svg+xml">
     <link rel="alternate icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/logo-light.png">
+    <link rel="apple-touch-icon" href="/assets/logo-light.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Titik Simpan">
     <title>@yield('title', 'Titik Simpan')</title>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -113,10 +117,10 @@
     </script>
     <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16 md:h-28">
+            <div class="flex justify-between items-center h-14 md:h-16">
                 <div class="flex items-center shrink-0">
                     <a href="{{ route('dashboard') }}" class="flex items-center">
-                        <img id="navbar-logo" src="/assets/logo-light.webp" alt="Titik Simpan" class="h-[60px] md:h-28 w-auto object-contain select-none drop-shadow-[0_4px_8px_rgba(27,163,122,0.35)] dark:drop-shadow-[0_4px_10px_rgba(110,231,176,0.3)]">
+                        <img id="navbar-logo" src="/assets/logo-light.webp" alt="Titik Simpan" class="h-9 md:h-10 w-auto object-contain select-none drop-shadow-[0_4px_8px_rgba(27,163,122,0.35)] dark:drop-shadow-[0_4px_10px_rgba(110,231,176,0.3)]">
                     </a>
                 </div>
 
@@ -150,7 +154,7 @@
                         </div>
                     </div>
                     <div class="relative" id="theme-wrap">
-                        <button onclick="cycleTheme()" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-all btn-press shadow-md shadow-black/10 dark:shadow-black/40 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:shadow-lg" title="{{ __('messages.theme.title') }}" aria-label="{{ __('messages.theme.title') }}">
+                        <button onclick="toggleTheme()" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-all btn-press shadow-md shadow-black/10 dark:shadow-black/40 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:shadow-lg" title="{{ __('messages.theme.title') }}" aria-label="{{ __('messages.theme.title') }}">
                             <svg id="theme-icon-dark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                             <svg id="theme-icon-light" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                         </button>
@@ -377,37 +381,27 @@
             hideLoading();
         });
 
-        // Theme: light | dark | auto (follows OS)
-        var _mql = window.matchMedia('(prefers-color-scheme: dark)');
-        function getTheme() { var t = localStorage.getItem('theme'); return (t === 'dark' || t === 'light') ? t : 'auto'; }
-        function resolveTheme(t) { return t === 'auto' ? (_mql.matches ? 'dark' : 'light') : t; }
+        // Theme: light | dark (2 modes only)
+        function getTheme() { return localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'; }
         function applyTheme(theme) {
-            var resolved = resolveTheme(theme);
-            document.documentElement.classList.toggle('dark', resolved === 'dark');
-            updateThemeIcon(resolved);
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            updateThemeIcon(theme);
             var logo = document.getElementById('navbar-logo');
-            if (logo) logo.src = resolved === 'dark' ? '/assets/logo-dark.webp' : '/assets/logo-light.webp';
+            if (logo) logo.src = theme === 'dark' ? '/assets/logo-dark.webp' : '/assets/logo-light.webp';
             var footerLogo = document.getElementById('footer-logo');
-            if (footerLogo) footerLogo.src = resolved === 'dark' ? '/assets/icon-dark.svg' : '/assets/icon-light.svg';
+            if (footerLogo) footerLogo.src = theme === 'dark' ? '/assets/icon-dark.svg' : '/assets/icon-light.svg';
             var heroLogo = document.getElementById('hero-logo');
-            if (heroLogo) heroLogo.src = resolved === 'dark' ? '/assets/logo-dark.png' : '/assets/logo-light.png';
+            if (heroLogo) heroLogo.src = theme === 'dark' ? '/assets/logo-dark.png' : '/assets/logo-light.png';
         }
         function setTheme(theme) { localStorage.setItem('theme', theme); applyTheme(theme); }
-        function updateThemeIcon(resolved) {
+        function toggleTheme() { setTheme(getTheme() === 'dark' ? 'light' : 'dark'); }
+        function updateThemeIcon(theme) {
             var darkIcon = document.getElementById('theme-icon-dark');
             var lightIcon = document.getElementById('theme-icon-light');
             if (!darkIcon || !lightIcon) return;
-            darkIcon.classList.toggle('hidden', resolved === 'dark');
-            lightIcon.classList.toggle('hidden', resolved === 'light');
+            darkIcon.classList.toggle('hidden', theme === 'dark');
+            lightIcon.classList.toggle('hidden', theme === 'light');
         }
-        var _themeOrder = ['auto','light','dark'];
-        function cycleTheme() {
-            var cur = getTheme();
-            var idx = _themeOrder.indexOf(cur);
-            var next = _themeOrder[(idx + 1) % _themeOrder.length];
-            setTheme(next);
-        }
-        if (_mql.addEventListener) _mql.addEventListener('change', function() { if (getTheme() === 'auto') applyTheme('auto'); });
         applyTheme(getTheme());
 
         document.addEventListener('click', function(e) {

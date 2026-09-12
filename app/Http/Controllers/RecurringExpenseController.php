@@ -46,6 +46,10 @@ class RecurringExpenseController extends Controller
     {
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
+            'category_id' => ['sometimes', 'required', Rule::exists('categories', 'id')->where('user_id', auth()->id())],
+            'amount' => 'sometimes|required|numeric|min:0.01',
+            'frequency' => 'sometimes|required|in:daily,weekly,monthly,yearly',
+            'next_due_date' => 'sometimes|required|date',
             'is_active' => 'sometimes|boolean',
         ]);
 

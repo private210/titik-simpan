@@ -25,6 +25,58 @@
                 @enderror
             </div>
 
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.recurring.category') }}</label>
+                <select name="category_id" required class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-4 py-2.5 transition-all">
+                    <option value="">{{ __('messages.recurring.select_category') }}</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('category_id', $recurringExpense->category_id) == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('category_id')
+                    <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.recurring.amount') }}</label>
+                <div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-[#1BA37A] focus-within:border-[#1BA37A] transition-all bg-white dark:bg-gray-700">
+                    <span class="pl-4 pr-3 py-2.5 md:py-3 text-black dark:text-white text-sm md:text-md font-medium border-r border-gray-300 dark:border-gray-600 shrink-0">Rp</span>
+                    <input type="text" name="amount_display" inputmode="numeric"
+                        value="{{ old('amount_display', number_format($recurringExpense->amount, 0, ',', '.')) }}" required
+                        class="w-full min-w-0 border-0 px-3 py-2.5 md:py-3 bg-transparent text-gray-900 dark:text-white text-sm md:text-base focus:outline-none focus:ring-0"
+                        placeholder="0" oninput="formatRupiah(this)" onfocus="this.select()">
+                    <input type="hidden" name="amount" value="{{ old('amount', $recurringExpense->amount) }}">
+                </div>
+                @error('amount')
+                    <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.recurring.frequency') }}</label>
+                <select name="frequency" required class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-4 py-2.5 transition-all">
+                    <option value="daily" {{ old('frequency', $recurringExpense->frequency) === 'daily' ? 'selected' : '' }}>{{ __('messages.recurring.daily') }}</option>
+                    <option value="monthly" {{ old('frequency', $recurringExpense->frequency) === 'monthly' ? 'selected' : '' }}>{{ __('messages.recurring.monthly') }}</option>
+                    <option value="weekly" {{ old('frequency', $recurringExpense->frequency) === 'weekly' ? 'selected' : '' }}>{{ __('messages.recurring.weekly') }}</option>
+                    <option value="yearly" {{ old('frequency', $recurringExpense->frequency) === 'yearly' ? 'selected' : '' }}>{{ __('messages.recurring.yearly') }}</option>
+                </select>
+                @error('frequency')
+                    <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.recurring.next_due_date') }}</label>
+                <input type="date" name="next_due_date" value="{{ old('next_due_date', $recurringExpense->next_due_date->format('Y-m-d')) }}" required
+                    class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl shadow-sm focus:ring-2 focus:ring-[#1BA37A] focus:border-[#1BA37A] text-sm md:text-base px-4 py-2.5 transition-all">
+                @error('next_due_date')
+                    <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>
+                @enderror
+            </div>
+
             <div class="flex flex-col sm:flex-row gap-3 pt-2">
                 <button type="submit" class="flex-1 bg-[#1BA37A] text-white py-3 rounded-2xl hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press font-medium text-sm md:text-base shadow-sm">
                     {{ __('messages.recurring.update') }}
@@ -40,6 +92,13 @@
 
 @push('scripts')
 <script>
+    function formatRupiah(el) {
+        var raw = el.value.replace(/[^0-9]/g, '');
+        el.value = raw ? parseInt(raw).toLocaleString('id-ID') : '';
+        var hidden = el.parentElement.querySelector('input[type="hidden"]');
+        if (hidden) hidden.value = raw || '0';
+    }
+
     function confirmCancel(url) {
         showConfirm({
             type: 'warning',

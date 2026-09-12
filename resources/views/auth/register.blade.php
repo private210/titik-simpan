@@ -6,6 +6,8 @@
     <meta name="theme-color" content="#1BA37A" id="browser-theme-color">
     <link rel="icon" href="/assets/icon-light.svg" type="image/svg+xml">
     <link rel="alternate icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/logo-light.png">
+    <link rel="apple-touch-icon" href="/assets/logo-light.png">
     <title>{{ __('messages.auth.register') }} - Titik Simpan</title>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,27 +45,10 @@
             </div>
         </div>
         <div class="relative" id="theme-wrap">
-            <button onclick="toggleThemeMenu(event)" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all" title="{{ __('messages.theme.title') }}" aria-label="{{ __('messages.theme.title') }}">
+            <button onclick="toggleTheme()" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all" title="{{ __('messages.theme.title') }}" aria-label="{{ __('messages.theme.title') }}">
                 <svg id="theme-icon-dark" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                 <svg id="theme-icon-light" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
             </button>
-            <div id="theme-menu" class="hidden absolute right-0 mt-2 w-44 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
-                <button onclick="selectTheme('light')" data-theme="light" class="theme-opt w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                    {{ __('messages.theme.light') }}
-                    <svg class="theme-check w-4 h-4 ml-auto hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                </button>
-                <button onclick="selectTheme('dark')" data-theme="dark" class="theme-opt w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-t border-gray-100 dark:border-gray-700">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-                    {{ __('messages.theme.dark') }}
-                    <svg class="theme-check w-4 h-4 ml-auto hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                </button>
-                <button onclick="selectTheme('auto')" data-theme="auto" class="theme-opt w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-t border-gray-100 dark:border-gray-700">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    {{ __('messages.theme.system') }}
-                    <svg class="theme-check w-4 h-4 ml-auto hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                </button>
-            </div>
         </div>
     </div>
 
@@ -119,11 +104,23 @@
                 </div>
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.auth.password') }}</label>
-                    <input id="password" type="password" name="password" required autocomplete="new-password" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1BA37A]/50">
+                    <div class="relative">
+                        <input id="password" type="password" name="password" required autocomplete="new-password" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1BA37A]/50 pr-11">
+                        <button type="button" onclick="togglePassword('password', this)" tabindex="-1" aria-label="show password" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <svg class="w-5 h-5 hidden" stroke="currentColor" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/></svg>
+                        </button>
+                    </div>
                 </div>
                 <div>
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.auth.confirm_password') }}</label>
-                    <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1BA37A]/50">
+                    <div class="relative">
+                        <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1BA37A]/50 pr-11">
+                        <button type="button" onclick="togglePassword('password_confirmation', this)" tabindex="-1" aria-label="show password" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <svg class="w-5 h-5 hidden" stroke="currentColor" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/></svg>
+                        </button>
+                    </div>
                 </div>
                 <button type="submit" class="w-full bg-[#1BA37A] text-white py-3 rounded-xl text-sm font-semibold hover:bg-[#0F8F68] active:bg-[#0C7A59] transition-all btn-press shadow-sm">
                     {{ __('messages.auth.register') }}
@@ -138,38 +135,28 @@
     </div>
 
     <script>
-        var _themeMql = window.matchMedia('(prefers-color-scheme: dark)');
-        function getTheme() { var t = localStorage.getItem('theme'); return (t === 'dark' || t === 'light') ? t : 'auto'; }
-        function resolveTheme(t) { return t === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t; }
+        function getTheme() { return localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'; }
         function setTheme(theme) {
             localStorage.setItem('theme', theme);
-            var resolved = resolveTheme(theme);
-            document.documentElement.classList.toggle('dark', resolved === 'dark');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
             var darkIcon = document.getElementById('theme-icon-dark');
             var lightIcon = document.getElementById('theme-icon-light');
-            darkIcon.classList.toggle('hidden', resolved === 'dark');
-            lightIcon.classList.toggle('hidden', resolved === 'light');
-            document.querySelectorAll('.theme-opt').forEach(function(btn) {
-                var active = btn.getAttribute('data-theme') === theme;
-                btn.querySelector('.theme-check').classList.toggle('hidden', !active);
-            });
+            darkIcon.classList.toggle('hidden', theme === 'dark');
+            lightIcon.classList.toggle('hidden', theme === 'light');
         }
-        function toggleThemeMenu(e) {
-            e.stopPropagation();
-            document.getElementById('theme-menu').classList.toggle('hidden');
-        }
-        function selectTheme(theme) {
-            setTheme(theme);
-            document.getElementById('theme-menu').classList.add('hidden');
+        function toggleTheme() { setTheme(getTheme() === 'dark' ? 'light' : 'dark'); }
+        function togglePassword(id, btn) {
+            var inp = document.getElementById(id);
+            var show = inp.type === 'password';
+            inp.type = show ? 'text' : 'password';
+            btn.querySelectorAll('svg')[0].classList.toggle('hidden', show);
+            btn.querySelectorAll('svg')[1].classList.toggle('hidden', !show);
         }
         function toggleLangMenu(e) {
             e.stopPropagation();
             document.getElementById('lang-menu').classList.toggle('hidden');
         }
-        if (_themeMql.addEventListener) _themeMql.addEventListener('change', function() { if (getTheme() === 'auto') setTheme('auto'); });
         document.addEventListener('click', function(e) {
-            var menu = document.getElementById('theme-menu');
-            if (menu && !menu.contains(e.target) && !e.target.closest('#theme-wrap button')) menu.classList.add('hidden');
             var langMenu = document.getElementById('lang-menu');
             if (langMenu && !langMenu.contains(e.target) && !e.target.closest('#lang-wrap button')) langMenu.classList.add('hidden');
         });
