@@ -46,7 +46,6 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             RateLimiter::clear($key);
             $request->session()->regenerate();
-            $this->recordLogin($request, Auth::user());
 
             return redirect()->intended('/');
         }
@@ -100,14 +99,6 @@ class AuthController extends Controller
     protected function throttleKey(Request $request): string
     {
         return 'login:' . $request->ip() . ':' . $request->email;
-    }
-
-    protected function recordLogin(Request $request, User $user): void
-    {
-        $user->update([
-            'last_login_at' => now(),
-            'last_login_ip' => $request->ip(),
-        ]);
     }
 
     public function logout(Request $request)
