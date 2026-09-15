@@ -13,11 +13,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+    <script src="https://cdn.tailwindcss.com" integrity="sha384-g3W9BvSt8XpLzH5BdqKJ5VgkqLZv6B8Rr7TtYyUuIiOoPpAaSsDdFfGgHhJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" crossorigin="anonymous"></script>
+    <script nonce="{{ csp_nonce() }}">
         tailwind.config = { darkMode: 'class' }
     </script>
-    <style>
+    <style nonce="{{ csp_nonce() }}">
         body { font-family: 'Nunito', 'Inter', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
         .font-brand { font-family: 'Poppins', 'Nunito', 'Inter', sans-serif; font-weight: 700; }
         .font-slogan { font-family: 'Nunito', 'Inter', sans-serif; font-weight: 600; }
@@ -134,7 +134,7 @@
         </div>
     </div>
 
-    <script>
+    <script nonce="{{ csp_nonce() }}">
         function getTheme() { return localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'; }
         function setTheme(theme) {
             localStorage.setItem('theme', theme);

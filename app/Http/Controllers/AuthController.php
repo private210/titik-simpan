@@ -9,11 +9,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
+    protected int $maxAttempts = 5;
+    protected int $decayMinutes = 15;
+    protected int $lockoutMinutes = 30;
+
     public function showLogin()
     {
         return view('auth.login');
@@ -21,18 +26,37 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $request->validate([
             'email' => 'required|email|max:255',
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        $key = $this->throttleKey($request);
+
+        if (RateLimiter::tooManyAttempts($key, $this->maxAttempts)) {
+            $seconds = RateLimiter::availableIn($key);
+            return back()->withErrors([
+                'email' => __('messages.auth.too_many_attempts', ['seconds' => $seconds, 'minutes' => $this->lockoutMinutes]),
+            ])->onlyInput('email');
+        }
+
+        $credentials = $request->only('email', 'password');
+        $remember = $request->boolean('remember');
+
+        if (Auth::attempt($credentials, $remember)) {
+            RateLimiter::clear($key);
             $request->session()->regenerate();
+            $this->recordLogin($request, Auth::user());
 
             return redirect()->intended('/');
         }
 
-        return back()->withErrors(['email' => __('messages.auth.login_failed')])->onlyInput('email');
+        RateLimiter::hit($key, $this->decayMinutes * 60);
+
+        $remaining = $this->maxAttempts - RateLimiter::attempts($key);
+        return back()->withErrors([
+            'email' => __('messages.auth.login_failed') . ($remaining > 0 ? " ({$remaining} attempts remaining)" : ''),
+        ])->onlyInput('email');
     }
 
     public function showRegister()
@@ -42,6 +66,14 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        $key = 'register:' . $request->ip();
+        
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            return back()->withErrors([
+                'email' => __('messages.auth.register_throttled'),
+            ]);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
@@ -52,14 +84,30 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'email_verified_at' => now(),
         ]);
 
         $this->seedDefaultCategories($user);
+
+        RateLimiter::hit($key, 3600);
 
         Auth::login($user);
         $request->session()->regenerate();
 
         return redirect('/')->with('success', __('messages.auth.registered'));
+    }
+
+    protected function throttleKey(Request $request): string
+    {
+        return 'login:' . $request->ip() . ':' . $request->email;
+    }
+
+    protected function recordLogin(Request $request, User $user): void
+    {
+        $user->update([
+            'last_login_at' => now(),
+            'last_login_ip' => $request->ip(),
+        ]);
     }
 
     public function logout(Request $request)

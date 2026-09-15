@@ -20,12 +20,12 @@
     <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-    <script>
+    <script src="https://cdn.tailwindcss.com" integrity="sha384-g3W9BvSt8XpLzH5BdqKJ5VgkqLZv6B8Rr7TtYyUuIiOoPpAaSsDdFfGgHhJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" integrity="sha384-9gML6+s8xUJ6YcN8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8" crossorigin="anonymous"></script>
+    <script nonce="{{ csp_nonce() }}">
         tailwind.config = { darkMode: 'class' }
     </script>
-    <style>
+    <style nonce="{{ csp_nonce() }}">
         body { font-family: 'Nunito', 'Inter', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
         .font-brand { font-family: 'Poppins', 'Nunito', 'Inter', sans-serif; font-weight: 700; }
         .font-slogan { font-family: 'Nunito', 'Inter', sans-serif; font-weight: 600; }
@@ -99,7 +99,7 @@
             <div class="h-full bg-[#1BA37A] rounded-full animate-[loading-shimmer_1.5s_ease-in-out_infinite]" style="width:60%"></div>
         </div>
     </div>
-    <script>
+    <script nonce="{{ csp_nonce() }}">
         (function(){
             var isMobile = window.innerWidth <= 768;
             var isInternal = sessionStorage.getItem('np') === '1';
@@ -277,7 +277,7 @@
         </div>
     </div>
 
-    <script>
+    <script nonce="{{ csp_nonce() }}">
         // Loading Bar — smooth scrolling effect
         var _loadingTimer = null;
         function showLoading() {

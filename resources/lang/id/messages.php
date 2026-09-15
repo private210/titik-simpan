@@ -76,6 +76,8 @@ return [
         'create_account' => 'Buat akun baru',
         'start_managing' => 'Mulai kelola keuangan Anda hari ini.',
         'login_failed' => 'Email atau kata sandi salah.',
+        'too_many_attempts' => 'Terlalu banyak percobaan gagal. Coba lagi dalam :seconds detik atau :minutes menit.',
+        'register_throttled' => 'Terlalu banyak percobaan pendaftaran. Coba lagi dalam beberapa menit.',
         'registered' => 'Akun berhasil dibuat, selamat datang!',
         'google_not_configured' => 'Login Google belum dikonfigurasi.',
         'google_failed' => 'Gagal masuk dengan Google, coba lagi.',

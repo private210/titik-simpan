@@ -65,6 +65,8 @@ return [
         'create_account' => 'Create a new account',
         'start_managing' => 'Start managing your finances today.',
         'login_failed' => 'Email or password is incorrect.',
+        'too_many_attempts' => 'Too many failed attempts. Try again in :seconds seconds or :minutes minutes.',
+        'register_throttled' => 'Too many registration attempts. Try again in a few minutes.',
         'registered' => 'Account created successfully, welcome!',
         'google_not_configured' => 'Google login is not configured.',
         'google_failed' => 'Failed to login with Google, please try again.',

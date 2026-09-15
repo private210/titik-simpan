@@ -42,7 +42,24 @@ Route::get('/lang/{locale}', function (string $locale) {
     session(['locale' => $locale]);
     app()->setLocale($locale);
 
-    return back();
+    $referer = request()->header('referer');
+    $allowedHosts = [config('app.url'), 'http://localhost', 'http://127.0.0.1'];
+    $safeRedirect = '/';
+
+    if ($referer) {
+        $refererUrl = parse_url($referer);
+        if ($refererUrl && isset($refererUrl['host'])) {
+            foreach ($allowedHosts as $allowed) {
+                $allowedHost = parse_url($allowed, PHP_URL_HOST);
+                if ($allowedHost && $refererUrl['host'] === $allowedHost) {
+                    $safeRedirect = $referer;
+                    break;
+                }
+            }
+        }
+    }
+
+    return redirect($safeRedirect);
 })->name('lang.switch');
 
 Route::get('/demo', function () {

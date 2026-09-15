@@ -11,6 +11,8 @@ class SetLocale
     {
         app()->setLocale(session('locale', config('app.locale', 'id')));
 
+        $request->attributes->set('csp_nonce', bin2hex(random_bytes(16)));
+
         return $next($request);
     }
 }
