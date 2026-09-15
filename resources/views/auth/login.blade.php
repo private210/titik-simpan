@@ -14,10 +14,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script nonce="{{ csp_nonce() }}">
+    <script >
         tailwind.config = { darkMode: 'class' }
     </script>
-    <style nonce="{{ csp_nonce() }}">
+    <style >
         body { font-family: 'Nunito', 'Inter', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
         .font-brand { font-family: 'Poppins', 'Nunito', 'Inter', sans-serif; font-weight: 700; }
         .font-slogan { font-family: 'Nunito', 'Inter', sans-serif; font-weight: 600; }
@@ -121,7 +121,7 @@
         </div>
     </div>
 
-    <script nonce="{{ csp_nonce() }}">
+    <script >
         function getTheme() { return localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'; }
         function setTheme(theme) {
             localStorage.setItem('theme', theme);

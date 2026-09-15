@@ -3,7 +3,7 @@
 @section('title', 'Titik Simpan - Kelola Keuangan Lebih Bijak')
 
 @section('content')
-<style nonce="{{ csp_nonce() }}">
+<style >
     .acc-btn:after { content: '+'; float: right; font-weight: 700; transition: transform 0.2s; }
     .acc-open .acc-btn:after { transform: rotate(45deg); }
     .acc-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
@@ -175,7 +175,7 @@
 @endsection
 
 @push('scripts')
-<script type="module" nonce="{{ csp_nonce() }}">
+<script type="module" >
 import { Renderer, Program, Mesh, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/src/index.min.js';
 
 (function() {
@@ -247,7 +247,7 @@ if (logoWrap) {
 }
 </script>
 
-<script nonce="{{ csp_nonce() }}">
+<script >
     function toggleFaq(btn) {
         var item = btn.closest('.acc-item');
         var wasOpen = item.classList.contains('acc-open');
