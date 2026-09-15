@@ -364,7 +364,6 @@ After deployment, verify:
 | `resources/views/landing.blade.php` | Nonce on landing page scripts |
 | `routes/web.php` | Fixed open redirect in `/lang/{locale}` |
 | `vercel.json` | Upgraded to vercel-php@0.9.0, edge headers |
-| `app/helpers.php` | `csp_nonce()` helper function |
 
 ---
 
