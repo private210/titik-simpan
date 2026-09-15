@@ -20,8 +20,8 @@
     <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    <script src="https://cdn.tailwindcss.com" integrity="sha384-g3W9BvSt8XpLzH5BdqKJ5VgkqLZv6B8Rr7TtYyUuIiOoPpAaSsDdFfGgHhJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" integrity="sha384-9gML6+s8xUJ6YcN8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8x8" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
     <script nonce="{{ csp_nonce() }}">
         tailwind.config = { darkMode: 'class' }
     </script>

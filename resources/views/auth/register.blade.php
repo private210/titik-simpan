@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com" integrity="sha384-g3W9BvSt8XpLzH5BdqKJ5VgkqLZv6B8Rr7TtYyUuIiOoPpAaSsDdFfGgHhJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script nonce="{{ csp_nonce() }}">
         tailwind.config = { darkMode: 'class' }
     </script>
